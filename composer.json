@@ -1,0 +1,30 @@
+{
+    "name": "nksoft/laravel-master",
+    "type": "library",
+    "description": "The Laravel Framework.",
+    "require": {
+        "php": "^7.2",
+        "fideloper/proxy": "^4.0",
+        "laravel/framework": "^6.2",
+        "laravel/tinker": "^2.0"
+    },
+    "authors": [
+        {
+            "name": "PhuongLe",
+            "email": "leduyphuong64@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Nksoft\\Master\\NkSoftMasterServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Nksoft\\Master\\": "src"
+        }
+    }
+}
