@@ -2,6 +2,7 @@
     "name": "nksoft/laravel-master",
     "type": "library",
     "description": "The Laravel Framework.",
+    "license": "proprietary",
     "require": {
         "php": "^7.2",
         "laravel/framework": "^6.2"
@@ -22,7 +23,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Nksoft\\Master\\": "src"
+            "Nksoft\\Master\\": "src/",
+            "Nksoft\\Master\\database\\seeds\\": "src/database/seeds/"
         }
     }
 }
