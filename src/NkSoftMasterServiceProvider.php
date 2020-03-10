@@ -31,5 +31,8 @@ class NkSoftMasterServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/views' => base_path('resources/views/nksoft/master')
         ]);
+        $this->publishes([
+            __DIR__.'/public' => public_path('vendor/nksoft')
+        ], 'public');
     }
 }

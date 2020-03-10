@@ -13,7 +13,7 @@ class CreateNUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('Nusers', function (Blueprint $table) {
+        Schema::create('nusers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->unique();
@@ -36,9 +36,9 @@ class CreateNUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('Nusers', function (Blueprint $table) {
+        Schema::table('nusers', function (Blueprint $table) {
             $table->dropForeign('role_id');
         });
-        Schema::dropIfExists('Nusers');
+        Schema::dropIfExists('nusers');
     }
 }
