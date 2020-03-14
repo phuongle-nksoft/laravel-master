@@ -1,9 +1,9 @@
 <?php
 
-namespace Nksoft\Master\databse\seeds;
+namespace Nksoft\Master\database\seeds;
 
 use Illuminate\Database\Seeder;
-use NkSoft\Master\Models\Navigations;
+use Nksoft\Master\Models\Navigations;
 
 class NavigationsTableSeeder extends Seeder
 {
@@ -27,14 +27,14 @@ class NavigationsTableSeeder extends Seeder
                 'link' => 'users',
                 'icon' => 'nav-icon fas fa-users',
                 'is_active' => true,
-                'order_by' => 99
+                'order_by' => 98
             ],
             [
                 'title' => 'Settings',
                 'link' => 'settings',
                 'icon' => 'nav-icon fas fa-whmcs',
                 'is_active' => true,
-                'order_by' => 100
+                'order_by' => 99
             ],
             [
                 'title' => 'Logout',
@@ -46,10 +46,13 @@ class NavigationsTableSeeder extends Seeder
         ];
         foreach ($items as $item) {
             $existItem = Navigations::where(['title' => $item['title']])->first();
-            if ($existItem != null) {
+            if ($existItem == null) {
                 Navigations::create($item);
             } else {
-                Navigations::update($item);
+                $existItem->title = $item['title'];
+                $existItem->link = $item['link'];
+                $existItem->icon = $item['icon'];
+                $existItem->save();
             }
         }
     }

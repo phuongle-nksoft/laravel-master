@@ -24,14 +24,26 @@ composer require nksoft/laravel-master
 <?php
 protected $routeMiddleware = [
     ...
-    'nksoft' => \NkSoft\Master\Middleware\CheckAuthorMiddleware::class,
+    'nksoft' => \Nksoft\Master\Middleware\CheckAuthorMiddleware::class,
 ];
+```
+
+### Migrate package
+
+```shell
+php artisan migrate
+```
+
+### DB seeder package
+
+```shell
+php artisan db:seed --class="\Nksoft\Master\database\seeds\NksoftSeeder"
 ```
 
 ### Publishes file
 
 ```shell
-php artisan vendor:publish --tag=public --force
+php artisan vendor:publish --tag=nksoft --force
 ```
 
 ## License

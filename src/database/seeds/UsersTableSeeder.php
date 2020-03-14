@@ -1,6 +1,6 @@
 <?php
 
-namespace Nksoft\Master\databse\seeds;
+namespace Nksoft\Master\database\seeds;
 
 use Illuminate\Database\Seeder;
 use Nksoft\Master\Models\Roles;
@@ -32,7 +32,9 @@ class UsersTableSeeder extends Seeder
                     'is_active' => true
                 ],
             ];
-            Roles::createMany($roles);
+            foreach ($roles as $item) {
+                Roles::create($item);
+            }
             $dev = Roles::where(['name' => 'Developer'])->first();
             if ($dev != null) {
                 Users::create([

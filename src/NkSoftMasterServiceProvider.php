@@ -28,11 +28,11 @@ class NkSoftMasterServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadViewsFrom(__DIR__ . '/views', 'master');
+        $this->loadTranslationsFrom(__DIR__ . '/language', 'nksoft');
         $this->publishes([
-            __DIR__ . '/views' => resource_path('views/vendor/master')
-        ]);
-        $this->publishes([
-            __DIR__ . '/public' => public_path('nksoft')
-        ], 'public');
+            __DIR__ . '/views' => resource_path('views/vendor/master'),
+            __DIR__ . '/public' => public_path('nksoft'),
+            __DIR__ . '/language' => resource_path('lang/vendor/nksoft')
+        ], 'nksoft');
     }
 }

@@ -4,6 +4,7 @@ namespace Nksoft\Master\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
@@ -14,7 +15,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        return view('master::modules.users.index');
     }
 
     /**
@@ -81,5 +82,26 @@ class UsersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function login(Request $request)
+    {
+        $validator = Validator($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:6|max:32',
+        ]);
+        if ($validator->fails())
+            return redirect()->back()->withErrors([trans('nksoft::login.Email or password is incorrect!')], 'login');
+        $credentials = $request->only('email', 'password', 'active');
+        if (Auth::attempt($credentials)) {
+            return redirect()->to('admin');
+        }
+        return redirect()->back()->withErrors([trans('nksoft::login.Email or password is incorrect!')], 'login');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->to('login');
     }
 }

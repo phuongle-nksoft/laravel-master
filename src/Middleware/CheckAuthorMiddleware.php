@@ -3,6 +3,7 @@
 namespace Nksoft\Master\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class CheckAuthorMiddleware
 {
@@ -15,6 +16,9 @@ class CheckAuthorMiddleware
      */
     public function handle($request, Closure $next)
     {
+        if (!Auth::check()) {
+            return redirect()->to('login');
+        }
         return $next($request);
     }
 }

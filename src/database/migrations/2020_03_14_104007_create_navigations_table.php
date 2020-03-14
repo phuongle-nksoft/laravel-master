@@ -17,7 +17,7 @@ class CreateNavigationsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('link')->nullable()->default('#');
-            $table->number('order_by')->nullable()->default(100);
+            $table->integer('order_by')->nullable()->default(100);
             $table->boolean('is_active');
             $table->string('icon')->nullable();
             $table->timestamps();

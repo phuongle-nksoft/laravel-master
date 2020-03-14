@@ -1,6 +1,6 @@
 <?php
 
-namespace Nksoft\Master\databse\seeds;
+namespace Nksoft\Master\database\seeds;
 
 use Illuminate\Database\Seeder;
 

@@ -9,5 +9,5 @@ class Users extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'Nusers';
+    protected $table = 'users';
 }

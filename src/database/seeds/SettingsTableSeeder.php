@@ -1,9 +1,9 @@
 <?php
 
-namespace Nksoft\Master\databse\seeds;
+namespace Nksoft\Master\database\seeds;
 
 use Illuminate\Database\Seeder;
-use NkSoft\Master\Models\Settings;
+use Nksoft\Master\Models\Settings;
 
 class SettingsTableSeeder extends Seeder
 {
