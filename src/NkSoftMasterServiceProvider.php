@@ -29,7 +29,7 @@ class NkSoftMasterServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
         $this->loadViewsFrom(__DIR__.'/views', 'master');
         $this->publishes([
-            __DIR__.'/views' => base_path('resources/views/nksoft/master')
+            __DIR__.'/views' => resource_path('views/vendor/master')
         ]);
         $this->publishes([
             __DIR__.'/public' => public_path('vendor/nksoft')
