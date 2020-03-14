@@ -22,6 +22,7 @@ class CreateNUsersTable extends Migration
             $table->string('phone')->unique();
             $table->unsignedBigInteger('role_id')->index();
             $table->string('birthday')->nullable();
+            $table->string('area')->nullable()->default('mn');
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

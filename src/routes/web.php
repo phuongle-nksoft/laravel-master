@@ -3,5 +3,5 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('admin', function () {
-    return view('master::layout');
+    return view('master::modules.dashboard.index');
 });

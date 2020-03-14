@@ -5,28 +5,59 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-    <link rel="stylesheet" href="{{url('css/app.css')}}">
+    <title>Control panel</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{url('nksoft/plugins/fontawesome-free/css/all.min.css')}}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{{url('nksoft/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{url('nksoft/css/adminlte.min.css')}}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="{{url('nksoft/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- Styles -->
     @yield('style')
 </head>
+@php
+$breadcrumb = [
+'title' => 'Dashboard',
+'breadcrumb' => [
+['title' => 'Home', 'link' => url('admin')],
+['title' => 'Dashboard', 'link' => url('admin/dashboard')]
+]];
+@endphp
 
-<body class="skin-blue">
-    @include('master::parts.header')
-    @include('master::parts.sidebar')
-    <div class="content-wrapper">
-        @yield('content')
-    </div>
-    <footer class="main-footer">
-        <div class="float-right d-none d-sm-inline">
-            v3.0.2
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        @include('master::parts.header')
+        @include('master::parts.sidebar')
+        <div class="content-wrapper">
+            @include('master::parts.breadcrumb', $breadcrumb)
+            @yield('content')
+            <!-- /.content -->
         </div>
-        <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <strong>Copyright &copy; 2014-{{date('Y')}}.</strong>
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+            <b>Version</b> 3.0.2
+        </div>
     </footer>
-    <script src="{{url('js/app.js')}}"></script>
+    <!-- jQuery -->
+    <script src="{{url('nksoft/plugins/jquery/jquery.min.js')}}"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="{{url('nksoft/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- overlayScrollbars -->
+    <script src="{{url('nksoft/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{url('nksoft/js/adminlte.min.js')}}"></script>
     @yield('script')
 </body>
 
