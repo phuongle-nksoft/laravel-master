@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{url('nksoft/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="{{url('nksoft/css/app.css')}}">
     <!-- Styles -->
     @yield('style')
 </head>
@@ -34,6 +35,16 @@ $breadcrumb = [
         @include('master::parts.sidebar')
         <div class="content-wrapper">
             @include('master::parts.breadcrumb', $breadcrumb)
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    @if($element == 'create')
+                    <div id="nk-list"></div>
+                    @else
+                    <div id="nk-form"></div>
+                    @endif
+                </div>
+            </section>
             @yield('content')
             <!-- /.content -->
         </div>
@@ -59,6 +70,7 @@ $breadcrumb = [
     <!-- AdminLTE App -->
     <script src="{{url('nksoft/js/adminlte.min.js')}}"></script>
     @yield('script')
+    <script src="{{url('nksoft/js/app.js')}}"></script>
 </body>
 
 </html>

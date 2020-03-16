@@ -4,9 +4,8 @@ namespace Nksoft\Master\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Nksoft\Master\Models\Navigations;
 
-class NavigationsController extends Controller
+class WebController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,25 +14,7 @@ class NavigationsController extends Controller
      */
     public function index()
     {
-        try {
-            $columns = ['id', 'title', 'link', 'icon'];
-            $result = Navigations::select($columns)->get();
-            $response = [
-                'data' => [
-                    'rows' => $result,
-                    'columns' => $columns,
-                ],
-                'success' => true,
-            ];
-
-        } catch (\Execption $e) {
-            $response = [
-                'data' => null,
-                'success' => false,
-                'message' => $e->getMessage(),
-            ];
-        }
-        return response()->json($response);
+        return view('master::layout', ['element' => 'list']);
     }
 
     /**
@@ -43,7 +24,7 @@ class NavigationsController extends Controller
      */
     public function create()
     {
-        //
+        return view('master::layout', ['element' => 'create']);
     }
 
     /**
@@ -76,7 +57,7 @@ class NavigationsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('master::layout', ['element' => 'edit']);
     }
 
     /**

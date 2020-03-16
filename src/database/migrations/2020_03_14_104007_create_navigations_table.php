@@ -20,6 +20,7 @@ class CreateNavigationsTable extends Migration
             $table->integer('order_by')->nullable()->default(100);
             $table->boolean('is_active');
             $table->string('icon')->nullable();
+            $table->longText('child')->nullable();
             $table->timestamps();
         });
     }

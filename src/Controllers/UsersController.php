@@ -2,9 +2,10 @@
 
 namespace Nksoft\Master\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Nksoft\Master\Models\Users;
 
 class UsersController extends Controller
 {
@@ -15,7 +16,25 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return view('master::modules.users.index');
+        try {
+            $columns = ['id', 'name', 'email', 'phone', 'area'];
+            $users = Users::select($columns)->get();
+            $response = [
+                'data' => [
+                    'rows' => $users,
+                    'columns' => $columns,
+                ],
+                'success' => true,
+            ];
+
+        } catch (\Execption $e) {
+            $response = [
+                'data' => null,
+                'success' => false,
+                'message' => $e->getMessage(),
+            ];
+        }
+        return response()->json($response);
     }
 
     /**
@@ -25,7 +44,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        return view('master::layout');
     }
 
     /**
@@ -47,7 +66,7 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('master::layout');
     }
 
     /**
@@ -58,7 +77,7 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('master::layout');
     }
 
     /**
@@ -90,8 +109,10 @@ class UsersController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6|max:32',
         ]);
-        if ($validator->fails())
+        if ($validator->fails()) {
             return redirect()->back()->withErrors([trans('nksoft::login.Email or password is incorrect!')], 'login');
+        }
+
         $credentials = $request->only('email', 'password', 'active');
         if (Auth::attempt($credentials)) {
             return redirect()->to('admin');

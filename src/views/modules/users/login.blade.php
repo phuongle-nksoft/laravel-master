@@ -51,7 +51,7 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="icheck-primary">
-                                <input type="checkbox" name="active" value="1" id="remember">
+                                <input type="checkbox" name="remember_token" value="1" id="remember">
                                 <label for="remember">
                                     {{trans('nksoft::login.Remember Me')}}
                                 </label>

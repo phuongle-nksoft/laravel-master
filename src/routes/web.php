@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Nksoft\Master\Controllers\UsersController;
+use Nksoft\Master\Controllers\WebController;
 
 Route::group(['middleware' => 'web'], function () {
     Route::get('login', function () {
@@ -10,10 +10,11 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('login', '\Nksoft\Master\Controllers\UsersController@login');
     Route::group(['middleware' => 'nksoft', 'prefix' => 'admin'], function () {
         Route::resources([
-            'users' => UsersController::class
+            '/' => WebController::class,
+            'dashboard' => WebController::class,
+            'users' => WebController::class,
+            'settings' => WebController::class,
+            'navigations' => WebController::class,
         ]);
     });
-});
-Route::get('admin', function () {
-    return view('master::modules.dashboard.index');
 });

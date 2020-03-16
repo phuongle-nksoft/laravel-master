@@ -1,8 +1,25 @@
+@php
+  $head = ['id', 'image', 'title'];
+  $table = [
+    'head' => $head,
+    'result' => [
+      ['id' => 1, 'image' => 'abc', 'title' => 'title1'],
+      ['id' => 3, 'image' => 'abc', 'title' => 'title2'],
+      ['id' => 2, 'image' => 'abc', 'title' => 'title3']
+    ]
+  ];
+@endphp
 @extends('master::layout')
+@section('script')
+<script>
+  window.pathUrl = '{!!url('admin/dashboard')!!}';
+</script>
+@endsection
 @section('content')
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
+    <div id="nksoft-table"></div>
     <!-- Small boxes (Stat box) -->
     <div class="row">
       <div class="col-lg-3 col-6">
