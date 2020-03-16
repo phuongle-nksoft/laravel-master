@@ -43,7 +43,30 @@ class NavigationsController extends Controller
      */
     public function create()
     {
-        //
+        try {
+            $response = [
+                'data' => [
+                    'formElement' => $this->renderElement(),
+                    'result' => null,
+                ],
+                'success' => true,
+            ];
+
+        } catch (\Execption $e) {
+            $response = [
+                'data' => null,
+                'success' => false,
+                'message' => $e->getMessage(),
+            ];
+        }
+        return response()->json($response);
+    }
+
+    private function renderElement()
+    {
+        return [
+
+        ];
     }
 
     /**
