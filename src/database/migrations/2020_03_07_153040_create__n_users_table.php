@@ -13,19 +13,23 @@ class CreateNUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('Nusers', function (Blueprint $table) {
+        if (Schema::hasTable('users')) {
+            Schema::dropIfExists('users');
+        }
+        Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone')->unique();
-            $table->unsignedBigInteger('role_id')->index();
+            $table->unsignedBigInteger('role_id')->index('users_role_id_index');
             $table->string('birthday')->nullable();
+            $table->string('area')->nullable()->default('mn');
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->foreign('role_id', 'users_role_id_foreign')->references('id')->on('roles')->onDelete('cascade');
         });
     }
 
@@ -36,9 +40,10 @@ class CreateNUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('Nusers', function (Blueprint $table) {
-            $table->dropForeign('role_id');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('users_role_id_foreign');
+            $table->dropIndex('users_role_id_index');
         });
-        Schema::dropIfExists('Nusers');
+        Schema::dropIfExists('users');
     }
 }
