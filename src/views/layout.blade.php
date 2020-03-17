@@ -38,7 +38,7 @@ $breadcrumb = [
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    @if($element == 'create')
+                    @if($element == 'list')
                     <div id="nk-list"></div>
                     @else
                     <div id="nk-form"></div>

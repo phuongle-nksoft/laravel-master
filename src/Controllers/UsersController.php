@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Nksoft\Master\Models\Users;
+use Nksoft\Master\Models\Roles;
 
 class UsersController extends Controller
 {
@@ -44,7 +45,41 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('master::layout');
+        try {
+            $response = [
+                'data' => [
+                    'formElement' => $this->formElement(),
+                    'result' => null,
+                ],
+                'success' => true,
+            ];
+
+        } catch (\Execption $e) {
+            $response = [
+                'data' => null,
+                'success' => false,
+                'message' => $e->getMessage(),
+            ];
+        }
+        return response()->json($response);
+    }
+
+    private function formElement() {
+        $roles = Roles::select(['id', 'name'])->get();
+        return [
+            'general' => [
+                'select' => ['key' => 'is_active', 'label' => 'Status', 'data' => config('nksoft.status')],
+                'checkbox' => ['key' => 'role_id', 'label' => 'Roles', 'data' => $roles]
+            ],
+            'input_form' => [
+                'text' => ['key' => 'name', 'label' => 'User Name', 'data' => null],
+                'email' => ['key' => 'email', 'label' => 'Email', 'data' => null],
+                'password' => ['key' => 'password', 'label' => 'Password', 'data' => null],
+                'text' => ['key' => 'phone', 'label' => 'Phone', 'data' => null],
+                'select' => ['key' => 'area', 'label' => 'Area', 'data' => config('nksoft.status')],
+                'textarea' => ['key' => 'content', 'label' => 'Content', 'data' => null, 'editor' => true],
+            ],
+        ];
     }
 
     /**

@@ -34,6 +34,7 @@ class NkSoftMasterServiceProvider extends ServiceProvider
             __DIR__ . '/views' => resource_path('views/vendor/master'),
             __DIR__ . '/public' => public_path('nksoft'),
             __DIR__ . '/language' => resource_path('lang/vendor/nksoft'),
+            __DIR__.'/config/nksoft.php' => config_path('nksoft.php')
         ], 'nksoft');
 
         view()->composer('master::parts.sidebar', function ($view) {
