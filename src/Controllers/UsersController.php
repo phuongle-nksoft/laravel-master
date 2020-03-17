@@ -5,8 +5,8 @@ namespace Nksoft\Master\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Nksoft\Master\Models\Users;
 use Nksoft\Master\Models\Roles;
+use Nksoft\Master\Models\Users;
 
 class UsersController extends Controller
 {
@@ -64,20 +64,35 @@ class UsersController extends Controller
         return response()->json($response);
     }
 
-    private function formElement() {
+    private function formElement()
+    {
         $roles = Roles::select(['id', 'name'])->get();
+        $status = [];
+        foreach (config('nksoft.status') as $v => $k) {
+            $status[] = ['id' => $k['id'], 'name' => trans($k['name'])];
+        }
         return [
-            'general' => [
-                'select' => ['key' => 'is_active', 'label' => 'Status', 'data' => config('nksoft.status')],
-                'checkbox' => ['key' => 'role_id', 'label' => 'Roles', 'data' => $roles]
+            [
+                'key' => 'general',
+                'label' => trans('nksoft::common.General'),
+                'element' => [
+                    ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $status, 'type' => 'select'],
+                    ['key' => 'role_id', 'label' => trans('nksoft::users.Roles'), 'data' => $roles, 'type' => 'select'],
+                ],
+                'active' => true,
             ],
-            'input_form' => [
-                'text' => ['key' => 'name', 'label' => 'User Name', 'data' => null],
-                'email' => ['key' => 'email', 'label' => 'Email', 'data' => null],
-                'password' => ['key' => 'password', 'label' => 'Password', 'data' => null],
-                'text' => ['key' => 'phone', 'label' => 'Phone', 'data' => null],
-                'select' => ['key' => 'area', 'label' => 'Area', 'data' => config('nksoft.status')],
-                'textarea' => ['key' => 'content', 'label' => 'Content', 'data' => null, 'editor' => true],
+            [
+                'key' => 'inputForm',
+                'label' => trans('nksoft::common.Content'),
+                'element' => [
+                    ['key' => 'name', 'label' => trans('nksoft::users.Username'), 'data' => null, 'type' => 'text'],
+                    ['key' => 'email', 'label' => trans('nksoft::users.Email'), 'data' => null, 'type' => 'email'],
+                    ['key' => 'password', 'label' => trans('nksoft::users.Password'), 'data' => null, 'type' => 'password'],
+                    ['key' => 'phone', 'label' => trans('nksoft::users.Phone'), 'data' => null, 'type' => 'text'],
+                    ['key' => 'birthday', 'label' => trans('nksoft::users.Birthday'), 'data' => null, 'type' => 'date'],
+                    ['key' => 'area', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'select'],
+                    ['key' => 'content', 'label' => trans('nksoft::users.Area'), 'data' => null, 'type' => 'textarea'],
+                ],
             ],
         ];
     }

@@ -1,8 +1,12 @@
 <?php
 return [
-	'status' => [
-		1 => 'Enable',
-		0 => 'Disable',
+    'status' => [
+        ['id' => 0, 'name' => 'Disable'],
+        ['id' => 1, 'name' => 'Enable'],
     ],
-    'area' => ['mn', 'mb', 'mt'];
+    'area' => [
+        ['id' => 'mn', 'name' => 'Miền Nam'],
+        ['id' => 'mb', 'name' => 'Miền Bắc'],
+        ['id' => 'mt', 'name' => 'Miền Trung'],
+    ],
 ];

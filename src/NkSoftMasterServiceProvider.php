@@ -34,9 +34,9 @@ class NkSoftMasterServiceProvider extends ServiceProvider
             __DIR__ . '/views' => resource_path('views/vendor/master'),
             __DIR__ . '/public' => public_path('nksoft'),
             __DIR__ . '/language' => resource_path('lang/vendor/nksoft'),
-            __DIR__.'/config/nksoft.php' => config_path('nksoft.php')
+            __DIR__ . '/config/nksoft.php' => config_path('nksoft.php'),
         ], 'nksoft');
-
+        $this->mergeConfigFrom(__DIR__ . '/config/nksoft.php', 'nksoft');
         view()->composer('master::parts.sidebar', function ($view) {
             $view->with(['sidebar' => \Nksoft\Master\Models\Navigations::where(['is_active' => 1])->orderBy('order_by')->get()]);
         });
