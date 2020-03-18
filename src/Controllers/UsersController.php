@@ -10,6 +10,9 @@ use Nksoft\Master\Models\Users;
 
 class UsersController extends Controller
 {
+    private $formData = ['is_active', 'role_id', 'name', 'email', 'password', 'phone', 'birthday', 'area', 'image', 'content'];
+
+    private $module = 'users';
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +26,7 @@ class UsersController extends Controller
             $response = [
                 'data' => [
                     'rows' => $users,
-                    'columns' => $columns,
+                    'columns' => $columns
                 ],
                 'success' => true,
             ];
@@ -50,6 +53,8 @@ class UsersController extends Controller
                 'data' => [
                     'formElement' => $this->formElement(),
                     'result' => null,
+                    'formData' => $this->formData,
+                    'module' => $this->module
                 ],
                 'success' => true,
             ];
@@ -91,7 +96,8 @@ class UsersController extends Controller
                     ['key' => 'phone', 'label' => trans('nksoft::users.Phone'), 'data' => null, 'type' => 'text'],
                     ['key' => 'birthday', 'label' => trans('nksoft::users.Birthday'), 'data' => null, 'type' => 'date'],
                     ['key' => 'area', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'select'],
-                    ['key' => 'content', 'label' => trans('nksoft::users.Area'), 'data' => null, 'type' => 'textarea'],
+                    ['key' => 'content', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'textarea'],
+                    ['key' => 'image', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'file'],
                 ],
             ],
         ];
@@ -105,7 +111,7 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -127,7 +133,26 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        return view('master::layout');
+        try {
+            $result = Users::select($this->formData)->find($id);
+            $response = [
+                'data' => [
+                    'formElement' => $this->formElement(),
+                    'result' => $result,
+                    'formData' => $this->formData,
+                    'module' => $this->module
+                ],
+                'success' => true,
+            ];
+
+        } catch (\Execption $e) {
+            $response = [
+                'data' => null,
+                'success' => false,
+                'message' => $e->getMessage(),
+            ];
+        }
+        return response()->json($response);
     }
 
     /**

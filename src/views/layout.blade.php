@@ -70,8 +70,9 @@ $breadcrumb = [
 
     <!-- Bootstrap 4 -->
     <script src="{{url('nksoft/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-    <!-- bootstrap datepicker -->
-    <script src="{{url('nksoft/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+    <!-- inputmask -->
+    <script src="{{url('nksoft/plugins/moment/moment.min.js')}}"></script>
+    <script src="{{url('nksoft/plugins/inputmask/min/jquery.inputmask.bundle.min.js')}}"></script>
     <!-- overlayScrollbars -->
     <script src="{{url('nksoft/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
     <!-- AdminLTE App -->
@@ -82,6 +83,9 @@ $breadcrumb = [
     <script src="{{url('nksoft/plugins/editor/ckfinder/ckfinder.js')}}"></script>
     @yield('script')
     <script src="{{url('nksoft/js/app.js')}}"></script>
+    <script>
+        $('[data-mask]').inputmask();
+    </script>
 </body>
 
 </html>
