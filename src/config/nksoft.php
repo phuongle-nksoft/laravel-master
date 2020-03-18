@@ -9,4 +9,10 @@ return [
         ['id' => 'mb', 'name' => 'Miền Bắc'],
         ['id' => 'mt', 'name' => 'Miền Trung'],
     ],
+    'providers' => [
+        Intervention\Image\ImageServiceProvider::class,
+    ],
+    'aliases' => [
+        'Image' => Intervention\Image\Facades\Image::class,
+    ],
 ];

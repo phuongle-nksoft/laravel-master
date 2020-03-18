@@ -2,15 +2,14 @@
 
 namespace Nksoft\Master\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Nksoft\Master\Models\Roles;
 use Nksoft\Master\Models\Users;
 
-class UsersController extends Controller
+class UsersController extends WebController
 {
-    private $formData = ['is_active', 'role_id', 'name', 'email', 'password', 'phone', 'birthday', 'area', 'image', 'content'];
+    private $formData = ['is_active', 'role_id', 'name', 'email', 'password', 'phone', 'birthday', 'area', 'image'];
 
     private $module = 'users';
     /**
@@ -26,7 +25,7 @@ class UsersController extends Controller
             $response = [
                 'data' => [
                     'rows' => $users,
-                    'columns' => $columns
+                    'columns' => $columns,
                 ],
                 'success' => true,
             ];
@@ -54,7 +53,7 @@ class UsersController extends Controller
                     'formElement' => $this->formElement(),
                     'result' => null,
                     'formData' => $this->formData,
-                    'module' => $this->module
+                    'module' => $this->module,
                 ],
                 'success' => true,
             ];
@@ -96,13 +95,30 @@ class UsersController extends Controller
                     ['key' => 'phone', 'label' => trans('nksoft::users.Phone'), 'data' => null, 'type' => 'text'],
                     ['key' => 'birthday', 'label' => trans('nksoft::users.Birthday'), 'data' => null, 'type' => 'date'],
                     ['key' => 'area', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'select'],
-                    ['key' => 'content', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'textarea'],
                     ['key' => 'image', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'file'],
                 ],
             ],
         ];
     }
 
+    private function rules()
+    {
+        return [
+            'email' => 'required|email:rfc,dns',
+            'image[]' => 'file',
+            'password' => 'required|min:6',
+        ];
+    }
+
+    private function message()
+    {
+        return [
+            'email.required' => trans('nksoft::common.Email is require!'),
+            'email.email' => trans('nksoft::common.Email is incorrect!'),
+            'password.required' => trans('nksoft::common.Password is require!'),
+            'password.min' => trans('nksoft::common.Password more than 6 letter!'),
+        ];
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -111,7 +127,27 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $validator = Validator($request->all(), $this->rules(), $this->message());
+        if ($validator->fails()) {
+            return \response()->json(['status' => 'error', 'message' => $validator->errors()]);
+        }
+        try {
+            $data = [];
+            foreach ($this->formData as $item) {
+                if ($item != 'image') {
+                    $data[$item] = $request->get($item);
+                }
+            }
+            $data['password'] = \Hash::make($data['password']);
+            $user = Users::create($data);
+            if ($request->hasFile('image')) {
+                $images = $request->file('image');
+                $this->setMedia($images, $user->id, $this->module);
+            }
+            return response()->json(['status' => 'success', 'message' => 'Success', 'result' => $user]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -140,7 +176,7 @@ class UsersController extends Controller
                     'formElement' => $this->formElement(),
                     'result' => $result,
                     'formData' => $this->formData,
-                    'module' => $this->module
+                    'module' => $this->module,
                 ],
                 'success' => true,
             ];
