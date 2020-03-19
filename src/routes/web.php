@@ -15,6 +15,7 @@ Route::group(['middleware' => 'web'], function () {
             'users' => WebController::class,
             'settings' => WebController::class,
             'navigations' => WebController::class,
+            'roles' => WebController::class,
         ]);
     });
 });

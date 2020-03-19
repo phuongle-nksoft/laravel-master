@@ -9,4 +9,10 @@ class Roles extends Model
 {
     use SoftDeletes;
     protected $table = 'roles';
+    protected $fillable = ['id', 'name', 'is_active'];
+
+    public function users()
+    {
+        return $this->hasOne('\Nksoft\Master\Models\Users', 'role_id', 'id');
+    }
 }
