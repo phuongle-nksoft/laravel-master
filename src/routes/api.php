@@ -7,6 +7,7 @@ Route::group(['prefix' => 'api/admin', 'middleware' => 'api'], function () {
     Route::get('/', function () {
         return response()->json(['status' => 'success']);
     });
+    Route::delete('media/:id', 'Nksoft\Master\Controllers\WebController@destroy');
     Route::resources([
         'users' => UsersController::class,
         'navigations' => NavigationsController::class,

@@ -9,7 +9,7 @@ use Nksoft\Master\Models\Users;
 
 class UsersController extends WebController
 {
-    private $formData = ['is_active', 'role_id', 'name', 'email', 'password', 'phone', 'birthday', 'area'];
+    private $formData = ['id', 'is_active', 'role_id', 'name', 'email', 'password', 'phone', 'birthday', 'area'];
 
     private $module = 'users';
     /**
@@ -48,7 +48,7 @@ class UsersController extends WebController
     public function create()
     {
         try {
-            \array_push($this->formData, 'image');
+            \array_push($this->formData, 'images');
             $response = [
                 'data' => [
                     'formElement' => $this->formElement(),
@@ -96,7 +96,7 @@ class UsersController extends WebController
                     ['key' => 'phone', 'label' => trans('nksoft::users.Phone'), 'data' => null, 'type' => 'text'],
                     ['key' => 'birthday', 'label' => trans('nksoft::users.Birthday'), 'data' => null, 'type' => 'date'],
                     ['key' => 'area', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'select'],
-                    ['key' => 'image', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'file'],
+                    ['key' => 'images', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'file'],
                 ],
             ],
         ];
@@ -106,7 +106,7 @@ class UsersController extends WebController
     {
         return [
             'email' => 'required|email:rfc,dns',
-            'image[]' => 'file',
+            'images[]' => 'file',
             'password' => 'required|min:6',
         ];
     }
@@ -135,14 +135,14 @@ class UsersController extends WebController
         try {
             $data = [];
             foreach ($this->formData as $item) {
-                if ($item != 'image') {
+                if ($item != 'images') {
                     $data[$item] = $request->get($item);
                 }
             }
             $data['password'] = \Hash::make($data['password']);
             $user = Users::create($data);
-            if ($request->hasFile('image')) {
-                $images = $request->file('image');
+            if ($request->hasFile('images')) {
+                $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
             }
             return response()->json(['status' => 'success', 'message' => 'Success', 'result' => $user]);
@@ -171,9 +171,9 @@ class UsersController extends WebController
     public function edit($id)
     {
         try {
+            array_push($this->formData, 'id');
             $result = Users::select($this->formData)->with(['images'])->find($id);
-            dd($result);
-            \array_push($this->formData, 'image');
+            \array_push($this->formData, 'images');
             $response = [
                 'data' => [
                     'formElement' => $this->formElement(),

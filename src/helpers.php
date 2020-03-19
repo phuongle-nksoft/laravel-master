@@ -5,7 +5,7 @@ if (!function_exists('putUploadImage')) {
     {
         $small = array(120, 120);
         $image = @file_get_contents($image);
-        $path = "public/media/" . $filename;
+        $path = "media/" . $filename;
         if (!is_dir(storage_path("public/media/"))) {
             \Storage::makeDirectory("public/media/");
         }
@@ -14,7 +14,7 @@ if (!function_exists('putUploadImage')) {
             $path, $image, 'public'
         );
         if ($resize == true) {
-            $pathSmall = "public/media/small/" . $filename;
+            $pathSmall = "media/small/" . $filename;
             \Storage::put(
                 $pathSmall, $image, 'public'
             );
@@ -39,7 +39,7 @@ if (!function_exists('deleteImage')) {
 if (!function_exists('getImage')) {
     function getImage($path)
     {
-        if (is_file(base_path("storage/app/" . $path))) {
+        if (is_file(base_path("storage/app/public/" . $path))) {
             return \Storage::url($path);
         }
 

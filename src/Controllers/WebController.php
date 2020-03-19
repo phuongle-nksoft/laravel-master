@@ -81,7 +81,8 @@ class WebController extends Controller
      */
     public function destroy($id)
     {
-        //
+        FilesUpload::find($id)->delete();
+        return true;
     }
 
     public function setMedia($images, $parent_id, $type)

@@ -14,7 +14,12 @@ composer require nksoft/laravel-master
 <?php
 'providers' => [
     ...
-    Nksoft\Master\NkSoftMasterServiceProvider::class
+    Nksoft\Master\NkSoftMasterServiceProvider::class,
+    Intervention\Image\ImageServiceProvider::class,
+]
+'aliases' => [
+    ...
+    'Image' => Intervention\Image\Facades\Image::class,
 ]
 ```
 
