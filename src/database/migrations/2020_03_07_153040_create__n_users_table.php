@@ -25,6 +25,7 @@ class CreateNUsersTable extends Migration
             $table->string('phone')->unique();
             $table->unsignedBigInteger('role_id')->index('users_role_id_index');
             $table->string('birthday')->nullable();
+            $table->boolean('is_active')->nullable()->default(1);
             $table->string('area')->nullable()->default('mn');
             $table->rememberToken();
             $table->softDeletes();

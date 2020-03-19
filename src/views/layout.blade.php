@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{{url('nksoft/plugins/fontawesome-free/css/all.min.css')}}">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{url('nksoft/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="{{url('nksoft/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{url('nksoft/css/adminlte.min.css')}}">
     <!-- overlayScrollbars -->
@@ -38,7 +40,7 @@ $breadcrumb = [
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    @if($element == 'create')
+                    @if($element == 'list')
                     <div id="nk-list"></div>
                     @else
                     <div id="nk-form"></div>
@@ -65,12 +67,25 @@ $breadcrumb = [
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
+
+    <!-- Bootstrap 4 -->
+    <script src="{{url('nksoft/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <!-- inputmask -->
+    <script src="{{url('nksoft/plugins/moment/moment.min.js')}}"></script>
+    <script src="{{url('nksoft/plugins/inputmask/min/jquery.inputmask.bundle.min.js')}}"></script>
     <!-- overlayScrollbars -->
     <script src="{{url('nksoft/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{url('nksoft/js/adminlte.min.js')}}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{url('nksoft/plugins/editor/ckeditor/ckeditor.js')}}"></script>
+    <script src="{{url('nksoft/plugins/editor/ckeditor/config.js')}}"></script>
+    <script src="{{url('nksoft/plugins/editor/ckfinder/ckfinder.js')}}"></script>
     @yield('script')
     <script src="{{url('nksoft/js/app.js')}}"></script>
+    <script>
+        $('[data-mask]').inputmask();
+    </script>
 </body>
 
 </html>

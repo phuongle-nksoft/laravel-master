@@ -4,6 +4,7 @@ namespace Nksoft\Master\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Nksoft\Master\Models\FilesUpload;
 
 class WebController extends Controller
 {
@@ -81,5 +82,27 @@ class WebController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function setMedia($images, $parent_id, $type)
+    {
+        if (isset($images)) {
+            foreach ($images as $file) {
+                if ($file->isValid()) {
+                    $name = $file->getClientOriginalName();
+                    $name = \str_slug($name, '-');
+                    $extension = $file->getClientOriginalExtension();
+                    $fileName = $name . '-' . time() . '.' . $extension;
+                    $path = putUploadImage($file, $fileName);
+                    FilesUpload::create([
+                        'image' => $path,
+                        'type' => $type,
+                        'parent_id' => $parent_id,
+                        'name' => $name,
+                        'order_by' => 0,
+                    ]);
+                }
+            }
+        }
     }
 }
