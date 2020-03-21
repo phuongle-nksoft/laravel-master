@@ -8,6 +8,20 @@ use Nksoft\Master\Models\FilesUpload;
 
 class WebController extends Controller
 {
+    protected function responseError(\Exception $e)
+    {
+        return [
+            'status' => 'error',
+            'data' => null,
+            'success' => false,
+            'message' => $e->getMessage(),
+        ];
+    }
+
+    protected function responseSuccess()
+    {
+        return ['status' => 'success', 'message' => ['default' => trans('nksoft::message.Success')]];
+    }
     /**
      * Display a listing of the resource.
      *
@@ -70,7 +84,17 @@ class WebController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator($request->all(), ['name' => 'required'], ['name.required' => __('nksoft::message.Field is require!', ['Field' => trans('nksoft::users.Username')])]);
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'message' => $validator]);
+        }
+        $image = FilesUpload::find($id);
+        if ($image != null) {
+            $image->name = $request->get('name');
+            $image->save();
+        }
+        $response = $this->responseSuccess();
+        return response()->json($response);
     }
 
     /**
@@ -81,8 +105,13 @@ class WebController extends Controller
      */
     public function destroy($id)
     {
-        FilesUpload::find($id)->delete();
-        return true;
+        try {
+            FilesUpload::find($id)->delete();
+            $response = $this->responseSuccess();
+        } catch (\Exception $e) {
+            $response = $this->responseError($e);
+        }
+        return response()->json($response);
     }
 
     public function setMedia($images, $parent_id, $type)

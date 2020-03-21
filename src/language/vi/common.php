@@ -4,4 +4,5 @@ return [
     'Status' => 'Trạng Thái',
     'General' => 'Chung',
     'Content' => 'Nội Dung',
+
 ];
