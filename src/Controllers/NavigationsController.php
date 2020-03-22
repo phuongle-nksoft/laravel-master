@@ -141,7 +141,7 @@ class NavigationsController extends Controller
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
             }
-            $response = $this->responseSuccess;
+            $response = $this->responseSuccess();
             $response['result'] = $user;
         } catch (\Exception $e) {
             $response = $this->responseError($e);
@@ -172,7 +172,7 @@ class NavigationsController extends Controller
             array_push($this->formData, 'id');
             $result = CurrentModule::select($this->formData)->with(['images'])->find($id);
             \array_push($this->formData, 'images');
-            $response = $this->responseSuccess;
+            $response = $this->responseSuccess();
             $response['data'] = [
                 'formElement' => $this->formElement(),
                 'result' => $result,
@@ -214,7 +214,7 @@ class NavigationsController extends Controller
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
             }
-            $response = $this->responseSuccess;
+            $response = $this->responseSuccess();
             $response['result'] = $user;
         } catch (\Exception $e) {
             $response = $this->responseError($e);
@@ -233,7 +233,7 @@ class NavigationsController extends Controller
         dd($id);
         try {
             CurrentModule::find($id)->delete();
-            $response = $this->responseSuccess;
+            $response = $this->responseSuccess();
         } catch (\Exception $e) {
             $response = $this->responseError($e);
         }

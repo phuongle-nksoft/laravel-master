@@ -8,20 +8,54 @@ use Nksoft\Master\Models\FilesUpload;
 
 class WebController extends Controller
 {
-    protected function responseError(\Exception $e)
+    protected $module = '';
+
+    public function responseError($message = null)
     {
-        return [
+        return response()->json([
             'status' => 'error',
             'data' => null,
             'success' => false,
-            'message' => $e->getMessage(),
+            'message' => $message,
+        ]);
+    }
+
+    public function responseSuccess(array $data = [])
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => [
+                'default' => trans('nksoft::message.Success'),
+            ],
+            'data' => $data,
+            'breadcrumb' => $this->breadcrumb(),
+        ]);
+    }
+
+    public function breadcrumb()
+    {
+        $segment = request()->segments();
+        $segment = array_slice($segment, 1, 4);
+        $breadcrumb = [];
+        foreach ($segment as $i => $item) {
+            $link = url($item);
+            if ($i > 0) {
+                $link = url(implode('/', array_slice($segment, 0, 2)));
+            }
+            if (!intval($item)) {
+                $breadcrumb[] = [
+                    'title' => trans('nksoft::common.' . $item),
+                    'link' => $link,
+                ];
+            }
+
+        }
+        return [
+            'title' => trans('nksoft::common.' . $this->module),
+            'breadcrumb' => $breadcrumb,
         ];
     }
 
-    protected function responseSuccess()
-    {
-        return ['status' => 'success', 'message' => ['default' => trans('nksoft::message.Success')]];
-    }
     /**
      * Display a listing of the resource.
      *

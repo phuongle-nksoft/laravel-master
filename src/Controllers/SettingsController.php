@@ -7,9 +7,9 @@ use Nksoft\Master\Models\Settings as CurrentModule;
 
 class SettingsController extends WebController
 {
-    private $formData = ['id', 'title', 'email', 'phone', 'address', 'description', 'head_script', 'body_top_script', 'body_bottom_script', 'social'];
+    protected $formData = ['id', 'title', 'email', 'phone', 'address', 'description', 'head_script', 'body_top_script', 'body_bottom_script', 'social'];
 
-    private $module = 'settings';
+    protected $module = 'settings';
     /**
      * Display a listing of the resource.
      *
@@ -31,19 +31,15 @@ class SettingsController extends WebController
             $result = CurrentModule::select($this->formData)->with(['images'])->first();
             \array_push($this->formData, 'images');
             $response = [
-                'data' => [
-                    'formElement' => $this->formElement(),
-                    'result' => $result,
-                    'formData' => $this->formData,
-                    'module' => $this->module,
-                ],
-                'success' => true,
+                'formElement' => $this->formElement(),
+                'result' => $result,
+                'formData' => $this->formData,
+                'module' => $this->module,
             ];
-
+            return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            $response = $this->responseError($e);
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     private function formElement()
@@ -56,7 +52,7 @@ class SettingsController extends WebController
                     ['key' => 'head_script', 'label' => trans('nksoft::settings.HeadScript'), 'data' => null, 'type' => 'textarea'],
                     ['key' => 'body_top_script', 'label' => trans('nksoft::settings.BodyTopScript'), 'data' => null, 'type' => 'textarea'],
                     ['key' => 'body_bottom_script', 'label' => trans('nksoft::settings.BodyBottomScript'), 'data' => null, 'type' => 'textarea'],
-                    ['key' => 'social', 'label' => trans('nksoft::settings.Social'), 'data' => ['fb', 'gg', 'tw', 'zl', 'lk'], 'type' => 'social'],
+                    ['key' => 'social', 'label' => trans('nksoft::settings.Social'), 'data' => config('nksoft.social'), 'type' => 'social'],
                 ],
                 'active' => true,
             ],
@@ -117,9 +113,8 @@ class SettingsController extends WebController
             $response = $this->responseSuccess();
             $response['result'] = $user;
         } catch (\Exception $e) {
-            $response = $this->responseError($e);
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     /**
@@ -145,16 +140,16 @@ class SettingsController extends WebController
             $result = CurrentModule::select($this->formData)->with(['images'])->find($id);
             \array_push($this->formData, 'images');
             $response = $this->responseSuccess();
-            $response['data'] = [
+            $response = [
                 'formElement' => $this->formElement(),
                 'result' => $result,
                 'formData' => $this->formData,
                 'module' => $this->module,
             ];
+            return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            $response = $this->responseError($e);
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     /**
@@ -166,7 +161,6 @@ class SettingsController extends WebController
      */
     public function update(Request $request, $id)
     {
-        dd($request->all());
         $user = CurrentModule::find($id);
         if ($user == null) {
             return response()->json($this->responseError());
@@ -191,12 +185,11 @@ class SettingsController extends WebController
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
             }
-            $response = $this->responseSuccess();
             $response['result'] = $user;
+            return $this->responseSuccess($response);
         } catch (\Exception $e) {
-            $response = $this->responseError($e);
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     /**

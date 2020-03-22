@@ -11,7 +11,7 @@ class UsersController extends WebController
 {
     private $formData = ['id', 'is_active', 'role_id', 'name', 'email', 'password', 'phone', 'birthday', 'area'];
 
-    private $module = 'users';
+    protected $module = 'users';
     /**
      * Display a listing of the resource.
      *
@@ -23,18 +23,14 @@ class UsersController extends WebController
             $columns = ['id', 'name', 'email', 'phone', 'area'];
             $users = CurrentModule::select($columns)->get();
             $response = [
-                'data' => [
-                    'rows' => $users,
-                    'columns' => $columns,
-                    'module' => $this->module,
-                ],
-                'success' => true,
+                'rows' => $users,
+                'columns' => $columns,
+                'module' => $this->module,
             ];
-
+            return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            $response = $this->responseError($e);
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     /**
@@ -47,19 +43,15 @@ class UsersController extends WebController
         try {
             \array_push($this->formData, 'images');
             $response = [
-                'data' => [
-                    'formElement' => $this->formElement(),
-                    'result' => null,
-                    'formData' => $this->formData,
-                    'module' => $this->module,
-                ],
-                'success' => true,
+                'formElement' => $this->formElement(),
+                'result' => null,
+                'formData' => $this->formData,
+                'module' => $this->module,
             ];
-
+            return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            $response = $this->responseError($e);
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     private function formElement()
@@ -144,12 +136,13 @@ class UsersController extends WebController
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
             }
-            $response = $this->responseSuccess();
-            $response['result'] = $user;
+            $response = [
+                'result' => $user,
+            ];
+            return $this->responseSuccess($response);
         } catch (\Exception $e) {
-            $response = $this->responseError($e);
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     /**
@@ -174,17 +167,16 @@ class UsersController extends WebController
         try {
             $result = CurrentModule::select($this->formData)->with(['images'])->find($id);
             \array_push($this->formData, 'images');
-            $response = $this->responseSuccess();
-            $response['data'] = [
+            $response = [
                 'formElement' => $this->formElement(),
                 'result' => $result,
                 'formData' => $this->formData,
                 'module' => $this->module,
             ];
+            return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            $response = $this->responseError($e);
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     /**
@@ -198,7 +190,7 @@ class UsersController extends WebController
     {
         $user = CurrentModule::find($id);
         if ($user == null) {
-            return response()->json($this->responseError());
+            return $this->responseError();
         }
         $validator = Validator($request->all(), $this->rules($id), $this->message());
         if ($validator->fails()) {
@@ -225,12 +217,13 @@ class UsersController extends WebController
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
             }
-            $response = $this->responseSuccess();
-            $response['result'] = $user;
+            $response = [
+                'result' => $user,
+            ];
+            return $this->responseSuccess($response);
         } catch (\Exception $e) {
-            $response = $this->responseError($e);
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     /**
@@ -243,11 +236,10 @@ class UsersController extends WebController
     {
         try {
             CurrentModule::find($id)->delete();
-            $response = $this->responseSuccess();
+            return $this->responseSuccess();
         } catch (\Exception $e) {
-            $response = $this->responseError($e);
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     public function login(Request $request)
