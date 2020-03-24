@@ -38,7 +38,7 @@ class SettingsController extends WebController
             ];
             return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            return $this->responseError($e->getMessage());
+            return $this->responseError($e);
         }
     }
 
@@ -113,7 +113,7 @@ class SettingsController extends WebController
             $response = $this->responseSuccess();
             $response['result'] = $user;
         } catch (\Exception $e) {
-            return $this->responseError($e->getMessage());
+            return $this->responseError($e);
         }
     }
 
@@ -148,7 +148,7 @@ class SettingsController extends WebController
             ];
             return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            return $this->responseError($e->getMessage());
+            return $this->responseError($e);
         }
     }
 
@@ -188,7 +188,7 @@ class SettingsController extends WebController
             $response['result'] = $user;
             return $this->responseSuccess($response);
         } catch (\Exception $e) {
-            return $this->responseError($e->getMessage());
+            return $this->responseError($e);
         }
     }
 

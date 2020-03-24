@@ -27,7 +27,7 @@ class RolesController extends WebController
             ];
             return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            return $this->responseError($e->getMessage());
+            return $this->responseError($e);
         }
     }
 
@@ -48,7 +48,7 @@ class RolesController extends WebController
             ];
             return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            return $this->responseError($e->getMessage());
+            return $this->responseError($e);
         }
     }
 
@@ -108,7 +108,7 @@ class RolesController extends WebController
             ];
             return $this->responseSuccess($response);
         } catch (\Exception $e) {
-            return $this->responseError($e->getMessage());
+            return $this->responseError($e);
         }
     }
 
@@ -141,7 +141,7 @@ class RolesController extends WebController
             ];
             return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            return $this->responseError($e->getMessage());
+            return $this->responseError($e);
         }
     }
 
@@ -178,7 +178,7 @@ class RolesController extends WebController
             ];
             return $this->responseSuccess($response);
         } catch (\Exception $e) {
-            return $this->responseError($e->getMessage());
+            return $this->responseError($e);
         }
     }
 
@@ -194,7 +194,7 @@ class RolesController extends WebController
             CurrentModel::find($id)->delete();
             return $this->responseSuccess();
         } catch (\Exception $e) {
-            return $this->responseError($e->getMessage());
+            return $this->responseError($e);
         }
     }
 }

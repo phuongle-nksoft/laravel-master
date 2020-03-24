@@ -5,7 +5,7 @@ namespace Nksoft\Master\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Nksoft\Master\Models\FilesUpload;
-
+use Str;
 class WebController extends Controller
 {
     protected $module = '';
@@ -154,7 +154,7 @@ class WebController extends Controller
             foreach ($images as $file) {
                 if ($file->isValid()) {
                     $name = $file->getClientOriginalName();
-                    $name = \str_slug($name, '-');
+                    $name = Str::slug($name, '-');
                     $extension = $file->getClientOriginalExtension();
                     $fileName = $name . '-' . time() . '.' . $extension;
                     $path = putUploadImage($file, $fileName);
