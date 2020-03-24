@@ -3,9 +3,9 @@
 namespace Nksoft\Master\database\seeds;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Nksoft\Master\Models\Roles;
 use Nksoft\Master\Models\Users;
-use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -21,15 +21,15 @@ class UsersTableSeeder extends Seeder
             $roles = [
                 [
                     'name' => 'Administrator',
-                    'is_active' => true
+                    'is_active' => true,
                 ],
                 [
                     'name' => 'Browser',
-                    'is_active' => true
+                    'is_active' => true,
                 ],
                 [
                     'name' => 'Developer',
-                    'is_active' => true
+                    'is_active' => true,
                 ],
             ];
             foreach ($roles as $item) {
@@ -39,10 +39,10 @@ class UsersTableSeeder extends Seeder
             if ($dev != null) {
                 Users::create([
                     'name' => 'admin',
-                    'email' => 'info@nksoft-vn.com',
+                    'email' => 'info@codev.vn',
                     'password' => Hash::make('admin@123'),
                     'phone' => '0909838524',
-                    'role_id' => $dev->id
+                    'role_id' => $dev->id,
                 ]);
             }
         }
