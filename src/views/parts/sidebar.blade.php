@@ -3,8 +3,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a href="{{url('admin')}}" class="brand-link">
-    <img src="{{url('nksoft/img/admin.svg')}}" alt="Control panel" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light">Control Panel</span>
+    <img src="{{url('nksoft/img/admin.svg')}}" alt="{{__('nksoft::common.Control Panel')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
+  <span class="brand-text font-weight-light">{{__('nksoft::common.Control Panel')}}</span>
   </a>
 
   <!-- Sidebar -->
@@ -16,7 +16,7 @@
                with font-awesome or any other icon font library -->
         @foreach($sidebar as $item)
           @if($item->link == '#')
-            <li class="nav-header">{{trans('nksoft::common.'.$item->title)}}</li>
+            <li class="nav-header">{{trans('nksoft::common.'.strtolower($item->title))}}</li>
             @php
               $childs = unserialize($item->child);
             @endphp
@@ -25,7 +25,7 @@
               <li class="nav-item">
                 <a href="{{url('admin/'.$child['link'])}}" class="nav-link @if(isset($active) && $active == $child['link']) active @endif">
                   <i class="{{$child['icon']}}"></i>
-                  <p>{{trans('nksoft::common.'.$child['title'])}}</p>
+                  <p>{{trans('nksoft::common.'.strtolower($child['title']))}}</p>
                 </a>
               </li>
               @endforeach
@@ -34,7 +34,7 @@
             <li class="nav-item">
               <a href="{{url('admin/'.$item->link)}}" class="nav-link @if(isset($active) && $active == $item->link) active @endif">
                 <i class="{{$item->icon}}"></i>
-                <p>{{trans('nksoft::common.'.$item->title)}}</p>
+                <p>{{trans('nksoft::common.'.strtolower($item->title))}}</p>
               </a>
             </li>
           @endif

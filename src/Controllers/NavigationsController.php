@@ -4,7 +4,7 @@ namespace Nksoft\Master\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Nksoft\Master\Models\Navigations as CurrentModule;
+use Nksoft\Master\Models\Navigations as CurrentModel;
 
 class NavigationsController extends Controller
 {
@@ -20,7 +20,7 @@ class NavigationsController extends Controller
     {
         try {
             $columns = ['id', 'title', 'link', 'icon'];
-            $users = CurrentModule::select($columns)->get();
+            $users = CurrentModel::select($columns)->get();
             $response = [
                 'data' => [
                     'rows' => $users,
@@ -136,7 +136,7 @@ class NavigationsController extends Controller
                 }
             }
             $data['password'] = \Hash::make($data['password']);
-            $user = CurrentModule::create($data);
+            $user = CurrentModel::create($data);
             if ($request->hasFile('images')) {
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
@@ -170,7 +170,7 @@ class NavigationsController extends Controller
     {
         try {
             array_push($this->formData, 'id');
-            $result = CurrentModule::select($this->formData)->with(['images'])->find($id);
+            $result = CurrentModel::select($this->formData)->with(['images'])->find($id);
             \array_push($this->formData, 'images');
             $response = $this->responseSuccess();
             $response['data'] = [
@@ -209,7 +209,7 @@ class NavigationsController extends Controller
                 $data['password'] = \Hash::make($data['password']);
             }
 
-            $user = CurrentModule::create($data);
+            $user = CurrentModel::create($data);
             if ($request->hasFile('images')) {
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
@@ -232,7 +232,7 @@ class NavigationsController extends Controller
     {
         dd($id);
         try {
-            CurrentModule::find($id)->delete();
+            CurrentModel::find($id)->delete();
             $response = $this->responseSuccess();
         } catch (\Exception $e) {
             $response = $this->responseError($e);

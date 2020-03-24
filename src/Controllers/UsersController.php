@@ -5,7 +5,7 @@ namespace Nksoft\Master\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Nksoft\Master\Models\Roles;
-use Nksoft\Master\Models\Users as CurrentModule;
+use Nksoft\Master\Models\Users as CurrentModel;
 
 class UsersController extends WebController
 {
@@ -21,7 +21,7 @@ class UsersController extends WebController
     {
         try {
             $columns = ['id', 'name', 'email', 'phone', 'area'];
-            $users = CurrentModule::select($columns)->get();
+            $users = CurrentModel::select($columns)->get();
             $response = [
                 'rows' => $users,
                 'columns' => $columns,
@@ -131,7 +131,7 @@ class UsersController extends WebController
                 }
             }
             $data['password'] = \Hash::make($data['password']);
-            $user = CurrentModule::create($data);
+            $user = CurrentModel::create($data);
             if ($request->hasFile('images')) {
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
@@ -165,7 +165,7 @@ class UsersController extends WebController
     public function edit($id)
     {
         try {
-            $result = CurrentModule::select($this->formData)->with(['images'])->find($id);
+            $result = CurrentModel::select($this->formData)->with(['images'])->find($id);
             \array_push($this->formData, 'images');
             $response = [
                 'formElement' => $this->formElement(),
@@ -188,7 +188,7 @@ class UsersController extends WebController
      */
     public function update(Request $request, $id)
     {
-        $user = CurrentModule::find($id);
+        $user = CurrentModel::find($id);
         if ($user == null) {
             return $this->responseError();
         }
@@ -212,7 +212,7 @@ class UsersController extends WebController
                 $user->$k = $v;
             }
             $user->save();
-            // $user = CurrentModule::save(['id' => $id], $data);
+            // $user = CurrentModel::save(['id' => $id], $data);
             if ($request->hasFile('images')) {
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
@@ -235,7 +235,7 @@ class UsersController extends WebController
     public function destroy($id)
     {
         try {
-            CurrentModule::find($id)->delete();
+            CurrentModel::find($id)->delete();
             return $this->responseSuccess();
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage());

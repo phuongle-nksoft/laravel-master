@@ -3,7 +3,7 @@
 namespace Nksoft\Master\Controllers;
 
 use Illuminate\Http\Request;
-use Nksoft\Master\Models\Settings as CurrentModule;
+use Nksoft\Master\Models\Settings as CurrentModel;
 
 class SettingsController extends WebController
 {
@@ -28,7 +28,7 @@ class SettingsController extends WebController
     public function create()
     {
         try {
-            $result = CurrentModule::select($this->formData)->with(['images'])->first();
+            $result = CurrentModel::select($this->formData)->with(['images'])->first();
             \array_push($this->formData, 'images');
             $response = [
                 'formElement' => $this->formElement(),
@@ -105,7 +105,7 @@ class SettingsController extends WebController
                     $data[$item] = $request->get($item);
                 }
             }
-            $user = CurrentModule::create($data);
+            $user = CurrentModel::create($data);
             if ($request->hasFile('images')) {
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
@@ -137,7 +137,7 @@ class SettingsController extends WebController
     public function edit($id)
     {
         try {
-            $result = CurrentModule::select($this->formData)->with(['images'])->find($id);
+            $result = CurrentModel::select($this->formData)->with(['images'])->find($id);
             \array_push($this->formData, 'images');
             $response = $this->responseSuccess();
             $response = [
@@ -161,7 +161,7 @@ class SettingsController extends WebController
      */
     public function update(Request $request, $id)
     {
-        $user = CurrentModule::find($id);
+        $user = CurrentModel::find($id);
         if ($user == null) {
             return response()->json($this->responseError());
         }
@@ -180,7 +180,7 @@ class SettingsController extends WebController
                 $user->$k = $v;
             }
             $user->save();
-            // $user = CurrentModule::save(['id' => $id], $data);
+            // $user = CurrentModel::save(['id' => $id], $data);
             if ($request->hasFile('images')) {
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);

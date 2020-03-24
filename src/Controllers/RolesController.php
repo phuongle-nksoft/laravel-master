@@ -3,7 +3,7 @@
 namespace Nksoft\Master\Controllers;
 
 use Illuminate\Http\Request;
-use Nksoft\Master\Models\Roles as CurrentModule;
+use Nksoft\Master\Models\Roles as CurrentModel;
 
 class RolesController extends WebController
 {
@@ -19,7 +19,7 @@ class RolesController extends WebController
     {
         try {
             $columns = ['id', 'name'];
-            $users = CurrentModule::select($columns)->get();
+            $users = CurrentModel::select($columns)->get();
             $response = [
                 'rows' => $users,
                 'columns' => $columns,
@@ -102,7 +102,7 @@ class RolesController extends WebController
             foreach ($this->formData as $item) {
                 $data[$item] = $request->get($item);
             }
-            $user = CurrentModule::create($data);
+            $user = CurrentModel::create($data);
             $response = [
                 'result' => $user,
             ];
@@ -132,7 +132,7 @@ class RolesController extends WebController
     public function edit($id)
     {
         try {
-            $result = CurrentModule::select($this->formData)->find($id);
+            $result = CurrentModel::select($this->formData)->find($id);
             $response = [
                 'formElement' => $this->formElement(),
                 'result' => $result,
@@ -154,7 +154,7 @@ class RolesController extends WebController
      */
     public function update(Request $request, $id)
     {
-        $user = CurrentModule::find($id);
+        $user = CurrentModel::find($id);
         if ($user == null) {
             return $this->responseError();
         }
@@ -191,7 +191,7 @@ class RolesController extends WebController
     public function destroy($id)
     {
         try {
-            CurrentModule::find($id)->delete();
+            CurrentModel::find($id)->delete();
             return $this->responseSuccess();
         } catch (\Exception $e) {
             return $this->responseError($e->getMessage());

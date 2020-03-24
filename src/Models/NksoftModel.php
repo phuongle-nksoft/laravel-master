@@ -7,4 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class NksoftModel extends Model
 {
     use SoftDeletes;
+
+    public function images() {
+        return $this->hasMany('\Nksoft\Master\Models\FilesUpload', 'parent_id')->where(['type' => $this->table]);
+    }
 }

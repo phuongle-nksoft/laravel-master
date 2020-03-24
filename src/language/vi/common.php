@@ -1,6 +1,6 @@
 <?php
 return [
-    'System' => 'Hệ Thống',
+    'system' => 'Hệ Thống',
     'Status' => 'Trạng Thái',
     'General' => 'Chung',
     'Content' => 'Nội Dung',
@@ -10,4 +10,20 @@ return [
     'create' => 'Tạo Mới',
     'settings' => 'Cài Đặt',
     'roles' => 'Quyền Quản Trị',
+    'Control Panel' => 'Trang Quản Trị',
+    'logout' => 'Thoát',
+    'products' => 'Sản Phẩm',
+    'categories' => 'Loại Sản Phẩm',
+    'sales' => 'Bán Hàng',
+    'customers' => 'Khách Hàng',
+    'shippings' => 'Địa Chỉ Giao Hàng',
+    'orders' => 'Đơn Hàng',
+    'payments' => 'Thanh Toán',
+    'Name' => 'Tên',
+    'Order By' => 'Số Thứ Tự',
+    'Slug' => 'Đường Dẫn',
+    'Description' => 'Chi Tiết',
+    'Images' => 'Hình',
+    'Meta Description' => 'Nội Dung Thẻ Meta',
+    'root' => 'Danh Mục'
 ];
