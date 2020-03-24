@@ -3,13 +3,13 @@
 namespace Nksoft\Master\Controllers;
 
 use Illuminate\Http\Request;
-use Nksoft\Master\Models\Roles;
+use Nksoft\Master\Models\Roles as CurrentModule;
 
 class RolesController extends WebController
 {
-    private $formData = ['is_active', 'name'];
+    private $formData = ['id', 'is_active', 'name'];
 
-    private $module = 'roles';
+    protected $module = 'roles';
     /**
      * Display a listing of the resource.
      *
@@ -19,23 +19,16 @@ class RolesController extends WebController
     {
         try {
             $columns = ['id', 'name'];
-            $users = Roles::select($columns)->get();
+            $users = CurrentModule::select($columns)->get();
             $response = [
-                'data' => [
-                    'rows' => $users,
-                    'columns' => $columns,
-                ],
-                'success' => true,
+                'rows' => $users,
+                'columns' => $columns,
+                'module' => $this->module,
             ];
-
+            return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            $response = [
-                'data' => null,
-                'success' => false,
-                'message' => $e->getMessage(),
-            ];
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     /**
@@ -46,24 +39,17 @@ class RolesController extends WebController
     public function create()
     {
         try {
+            \array_push($this->formData, 'images');
             $response = [
-                'data' => [
-                    'formElement' => $this->formElement(),
-                    'result' => null,
-                    'formData' => $this->formData,
-                    'module' => $this->module,
-                ],
-                'success' => true,
+                'formElement' => $this->formElement(),
+                'result' => null,
+                'formData' => $this->formData,
+                'module' => $this->module,
             ];
-
+            return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            $response = [
-                'data' => null,
-                'success' => false,
-                'message' => $e->getMessage(),
-            ];
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     private function formElement()
@@ -85,17 +71,18 @@ class RolesController extends WebController
         ];
     }
 
-    private function rules()
+    private function rules($id = 0)
     {
-        return [
+        $rules = [
             'name' => 'required',
         ];
+        return $rules;
     }
 
     private function message()
     {
         return [
-            'name.required' => trans('nksoft::common.Email is require!'),
+            'name.required' => __('nksoft::message.Field is require!', ['Field' => trans('nksoft::Users.Username')]),
         ];
     }
     /**
@@ -108,19 +95,20 @@ class RolesController extends WebController
     {
         $validator = Validator($request->all(), $this->rules(), $this->message());
         if ($validator->fails()) {
-            return \response()->json(['status' => 'error', 'message' => $validator->errors()]);
+            return \response()->json(['status' => 'error', 'message' => $validator->customMessages]);
         }
         try {
             $data = [];
             foreach ($this->formData as $item) {
-                if ($item != 'image') {
-                    $data[$item] = $request->get($item);
-                }
+                $data[$item] = $request->get($item);
             }
-            $user = Roles::create($data);
-            return response()->json(['status' => 'success', 'message' => 'Success', 'result' => $user]);
+            $user = CurrentModule::create($data);
+            $response = [
+                'result' => $user,
+            ];
+            return $this->responseSuccess($response);
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+            return $this->responseError($e->getMessage());
         }
     }
 
@@ -144,27 +132,17 @@ class RolesController extends WebController
     public function edit($id)
     {
         try {
-            $result = Roles::select($this->formData)->with(['users'])->find($id);
-            dd($result);
-            \array_push($this->formData, 'image');
+            $result = CurrentModule::select($this->formData)->find($id);
             $response = [
-                'data' => [
-                    'formElement' => $this->formElement(),
-                    'result' => $result,
-                    'formData' => $this->formData,
-                    'module' => $this->module,
-                ],
-                'success' => true,
+                'formElement' => $this->formElement(),
+                'result' => $result,
+                'formData' => $this->formData,
+                'module' => $this->module,
             ];
-
+            return $this->responseSuccess($response);
         } catch (\Execption $e) {
-            $response = [
-                'data' => null,
-                'success' => false,
-                'message' => $e->getMessage(),
-            ];
+            return $this->responseError($e->getMessage());
         }
-        return response()->json($response);
     }
 
     /**
@@ -176,7 +154,32 @@ class RolesController extends WebController
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = CurrentModule::find($id);
+        if ($user == null) {
+            return $this->responseError();
+        }
+        $validator = Validator($request->all(), $this->rules($id), $this->message());
+        if ($validator->fails()) {
+            return \response()->json(['status' => 'error', 'message' => $validator->errors()]);
+        }
+        try {
+            $data = [];
+            foreach ($this->formData as $item) {
+                if ($item != 'id') {
+                    $data[$item] = $request->get($item);
+                }
+            }
+            foreach ($data as $k => $v) {
+                $user->$k = $v;
+            }
+            $user->save();
+            $response = [
+                'result' => $user,
+            ];
+            return $this->responseSuccess($response);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage());
+        }
     }
 
     /**
@@ -187,6 +190,11 @@ class RolesController extends WebController
      */
     public function destroy($id)
     {
-        //
+        try {
+            CurrentModule::find($id)->delete();
+            return $this->responseSuccess();
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage());
+        }
     }
 }

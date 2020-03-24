@@ -9,12 +9,12 @@ Route::group(['middleware' => 'web'], function () {
     });
     Route::post('login', '\Nksoft\Master\Controllers\UsersController@login');
     Route::group(['middleware' => 'nksoft', 'prefix' => 'admin'], function () {
+        Route::get('logout', '\Nksoft\Master\Controllers\UsersController@logout');
+        Route::get('settings', '\Nksoft\Master\Controllers\WebController@create');
         Route::resources([
             '/' => WebController::class,
             'dashboard' => WebController::class,
             'users' => WebController::class,
-            'settings' => WebController::class,
-            'navigations' => WebController::class,
             'roles' => WebController::class,
         ]);
     });
