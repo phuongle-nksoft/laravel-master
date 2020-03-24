@@ -5,3 +5,13 @@
         }
     }
 }
+
+h1 {
+    &.text-dark {
+        font-size: 2rem;
+    }
+}
+
+.content-wrapper {
+    padding-top: 2rem;
+}

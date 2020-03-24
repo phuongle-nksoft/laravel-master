@@ -20,7 +20,7 @@ if (!function_exists('putUploadImage')) {
             );
             resizeImage($small, $pathSmall);
         }
-        return $path;
+        return str_replace('public/', '', $path);
     }
 }
 

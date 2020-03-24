@@ -39,13 +39,6 @@ class NavigationsTableSeeder extends Seeder
         ];
         $items = [
             [
-                'title' => 'Dashboard',
-                'link' => 'dashboard',
-                'icon' => 'nav-icon fas fa-tachometer-alt',
-                'is_active' => true,
-                'order_by' => 1,
-            ],
-            [
                 'title' => 'System',
                 'link' => '#',
                 'icon' => '',

@@ -1,13 +1,8 @@
 <?php
 
 namespace Nksoft\Master\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
-class Roles extends Model
+class Roles extends NksoftModel
 {
-    use SoftDeletes;
     protected $table = 'roles';
     protected $fillable = ['id', 'name', 'is_active'];
 

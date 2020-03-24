@@ -14,7 +14,12 @@ composer require nksoft/laravel-master
 <?php
 'providers' => [
     ...
-    Nksoft\Master\NkSoftMasterServiceProvider::class
+    Nksoft\Master\NkSoftMasterServiceProvider::class,
+    Intervention\Image\ImageServiceProvider::class,
+]
+'aliases' => [
+    ...
+    'Image' => Intervention\Image\Facades\Image::class,
 ]
 ```
 
@@ -44,6 +49,12 @@ php artisan db:seed --class="\Nksoft\Master\database\seeds\NksoftSeeder"
 
 ```shell
 php artisan vendor:publish --tag=nksoft --force
+```
+
+### Syslink storage file
+
+```shell
+php artisan storage:link
 ```
 
 ## License

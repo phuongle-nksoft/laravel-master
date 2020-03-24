@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="{{url('nksoft/plugins/fontawesome-free/css/all.min.css')}}">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{url('nksoft/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
-    <!-- bootstrap datepicker -->
-    <link rel="stylesheet" href="{{url('nksoft/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{url('nksoft/css/adminlte.min.css')}}">
     <!-- overlayScrollbars -->
@@ -22,21 +20,12 @@
     <!-- Styles -->
     @yield('style')
 </head>
-@php
-$breadcrumb = [
-'title' => 'Dashboard',
-'breadcrumb' => [
-['title' => 'Home', 'link' => url('admin')],
-['title' => 'Dashboard', 'link' => url('admin/dashboard')]
-]];
-@endphp
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         @include('master::parts.header')
         @include('master::parts.sidebar')
         <div class="content-wrapper">
-            @include('master::parts.breadcrumb', $breadcrumb)
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
@@ -70,9 +59,6 @@ $breadcrumb = [
 
     <!-- Bootstrap 4 -->
     <script src="{{url('nksoft/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-    <!-- inputmask -->
-    <script src="{{url('nksoft/plugins/moment/moment.min.js')}}"></script>
-    <script src="{{url('nksoft/plugins/inputmask/min/jquery.inputmask.bundle.min.js')}}"></script>
     <!-- overlayScrollbars -->
     <script src="{{url('nksoft/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
     <!-- AdminLTE App -->
@@ -83,9 +69,6 @@ $breadcrumb = [
     <script src="{{url('nksoft/plugins/editor/ckfinder/ckfinder.js')}}"></script>
     @yield('script')
     <script src="{{url('nksoft/js/app.js')}}"></script>
-    <script>
-        $('[data-mask]').inputmask();
-    </script>
 </body>
 
 </html>
