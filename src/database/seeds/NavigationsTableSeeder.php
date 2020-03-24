@@ -55,16 +55,5 @@ class NavigationsTableSeeder extends Seeder
             ],
         ];
         Navigations::saveItem($items);
-        // foreach ($items as $item) {
-        //     $existItem = (['title' => $item['title']])->first();
-        //     if ($existItem == null) {
-        //         Navigations::create($item);
-        //     } else {
-        //         $existItem->title = $item['title'];
-        //         $existItem->link = $item['link'];
-        //         $existItem->icon = $item['icon'];
-        //         $existItem->save();
-        //     }
-        // }
     }
 }

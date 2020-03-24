@@ -5,7 +5,6 @@ namespace Nksoft\Master\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Nksoft\Master\Models\Navigations;
-
 class NavigationsController extends Controller
 {
     /**

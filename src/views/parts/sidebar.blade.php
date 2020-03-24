@@ -25,7 +25,7 @@
               <li class="nav-item">
                 <a href="{{url('admin/'.$child['link'])}}" class="nav-link @if(isset($active) && $active == $child['link']) active @endif">
                   <i class="{{$child['icon']}}"></i>
-                  <p>{{$child['title']}}</p>
+                  <p>{{trans('nksoft::common.'.$child['title'])}}</p>
                 </a>
               </li>
               @endforeach
@@ -34,7 +34,7 @@
             <li class="nav-item">
               <a href="{{url('admin/'.$item->link)}}" class="nav-link @if(isset($active) && $active == $item->link) active @endif">
                 <i class="{{$item->icon}}"></i>
-                <p>{{$item->title}}</p>
+                <p>{{trans('nksoft::common.'.$item->title)}}</p>
               </a>
             </li>
           @endif
