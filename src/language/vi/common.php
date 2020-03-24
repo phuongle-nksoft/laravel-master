@@ -25,5 +25,12 @@ return [
     'Description' => 'Chi Tiết',
     'Images' => 'Hình',
     'Meta Description' => 'Nội Dung Thẻ Meta',
-    'root' => 'Danh Mục'
+    'root' => 'Danh Mục',
+    'brands' => 'Thương Hiệu',
+    'regions' => 'Quốc Gia',
+    'vintages' => 'Giống',
+    'professionals' => 'Chuyên Gia',
+    'Disable' => 'Không hiện thị',
+    'Enable' => 'Hiện Thị',
+    'Price' => 'Giá',
 ];

@@ -2,6 +2,7 @@
 
 namespace Nksoft\Master\Controllers;
 
+use Arr;
 use Illuminate\Http\Request;
 use Nksoft\Master\Models\Roles as CurrentModel;
 
@@ -18,8 +19,13 @@ class RolesController extends WebController
     public function index()
     {
         try {
-            $columns = ['id', 'name'];
-            $users = CurrentModel::select($columns)->get();
+            $columns = [
+                ['key' => 'id', 'label' => 'Id'],
+                ['key' => 'name', 'label' => trans('nksoft::common.Name')],
+                ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $this->status()],
+            ];
+            $select = Arr::pluck($columns, 'key');
+            $users = CurrentModel::select($select)->get();
             $response = [
                 'rows' => $users,
                 'columns' => $columns,
