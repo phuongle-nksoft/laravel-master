@@ -7,4 +7,5 @@ return [
     'Email' => 'Email',
     'Password' => 'Mật Khẩu',
     'Birthday' => 'Ngày Sinh',
+    'Avatar' => 'Hình',
 ];

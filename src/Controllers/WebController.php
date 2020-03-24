@@ -8,6 +8,54 @@ use Nksoft\Master\Models\FilesUpload;
 
 class WebController extends Controller
 {
+    protected $module = '';
+
+    public function responseError($message = null)
+    {
+        return response()->json([
+            'status' => 'error',
+            'data' => null,
+            'success' => false,
+            'message' => $message,
+        ]);
+    }
+
+    public function responseSuccess(array $data = [])
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => [
+                'default' => trans('nksoft::message.Success'),
+            ],
+            'data' => $data,
+            'breadcrumb' => $this->breadcrumb(),
+        ]);
+    }
+
+    public function breadcrumb()
+    {
+        $segment = request()->segments();
+        $segment = array_slice($segment, 1, 4);
+        $breadcrumb = [];
+        foreach ($segment as $i => $item) {
+            $link = url($item);
+            if ($i > 0) {
+                $link = url(implode('/', array_slice($segment, 0, 2)));
+            }
+            if (!intval($item)) {
+                $breadcrumb[] = [
+                    'title' => trans('nksoft::common.' . $item),
+                    'link' => $link,
+                ];
+            }
+
+        }
+        return [
+            'title' => trans('nksoft::common.' . $this->module),
+            'breadcrumb' => $breadcrumb,
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -70,7 +118,17 @@ class WebController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator($request->all(), ['name' => 'required'], ['name.required' => __('nksoft::message.Field is require!', ['Field' => trans('nksoft::users.Username')])]);
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'message' => $validator]);
+        }
+        $image = FilesUpload::find($id);
+        if ($image != null) {
+            $image->name = $request->get('name');
+            $image->save();
+        }
+        $response = $this->responseSuccess();
+        return response()->json($response);
     }
 
     /**
@@ -81,8 +139,13 @@ class WebController extends Controller
      */
     public function destroy($id)
     {
-        FilesUpload::find($id)->delete();
-        return true;
+        try {
+            FilesUpload::find($id)->delete();
+            $response = $this->responseSuccess();
+        } catch (\Exception $e) {
+            $response = $this->responseError($e);
+        }
+        return response()->json($response);
     }
 
     public function setMedia($images, $parent_id, $type)

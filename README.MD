@@ -51,6 +51,12 @@ php artisan db:seed --class="\Nksoft\Master\database\seeds\NksoftSeeder"
 php artisan vendor:publish --tag=nksoft --force
 ```
 
+### Syslink storage file
+
+```shell
+php artisan storage:link
+```
+
 ## License
 
 Released under the MIT License attached with this code.
