@@ -4,8 +4,8 @@
     "description": "The Laravel Framework.",
     "license": "proprietary",
     "require": {
-        "php": "^7.1",
-        "laravel/framework": "^5.8",
+        "php": ">=7.1",
+        "laravel/framework": ">=5.8",
         "intervention/image": "^2.3"
     },
     "authors": [{
