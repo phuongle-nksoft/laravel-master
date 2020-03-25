@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Nksoft\Master\Models\FilesUpload;
 use Str;
+
 class WebController extends Controller
 {
     protected $module = '';
@@ -30,6 +31,15 @@ class WebController extends Controller
             'data' => $data,
             'breadcrumb' => $this->breadcrumb(),
         ]);
+    }
+
+    public function status()
+    {
+        $status = [];
+        foreach (config('nksoft.status') as $v => $k) {
+            $status[] = ['id' => $k['id'], 'name' => trans('nksoft::common.' . $k['name'])];
+        }
+        return $status;
     }
 
     public function breadcrumb()

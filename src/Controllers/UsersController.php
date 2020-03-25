@@ -2,6 +2,7 @@
 
 namespace Nksoft\Master\Controllers;
 
+use Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Nksoft\Master\Models\Roles;
@@ -20,8 +21,16 @@ class UsersController extends WebController
     public function index()
     {
         try {
-            $columns = ['id', 'name', 'email', 'phone', 'area'];
-            $users = CurrentModel::select($columns)->get();
+            $columns = [
+                ['key' => 'id', 'label' => 'Id'],
+                ['key' => 'name', 'label' => trans('nksoft::common.Name')],
+                ['key' => 'email', 'label' => trans('nksoft::users.Email')],
+                ['key' => 'phone', 'label' => trans('nksoft::users.Phone')],
+                ['key' => 'area', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area')],
+                ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $this->status()],
+            ];
+            $select = Arr::pluck($columns, 'key');
+            $users = CurrentModel::select($select)->get();
             $response = [
                 'rows' => $users,
                 'columns' => $columns,
@@ -57,16 +66,12 @@ class UsersController extends WebController
     private function formElement()
     {
         $roles = Roles::select(['id', 'name'])->get();
-        $status = [];
-        foreach (config('nksoft.status') as $v => $k) {
-            $status[] = ['id' => $k['id'], 'name' => trans($k['name'])];
-        }
         return [
             [
                 'key' => 'general',
                 'label' => trans('nksoft::common.General'),
                 'element' => [
-                    ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $status, 'type' => 'select'],
+                    ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $this->status(), 'type' => 'select'],
                     ['key' => 'role_id', 'label' => trans('nksoft::users.Roles'), 'data' => $roles, 'type' => 'select'],
                 ],
                 'active' => true,
