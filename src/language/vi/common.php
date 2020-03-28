@@ -26,11 +26,22 @@ return [
     'Images' => 'Hình',
     'Meta Description' => 'Nội Dung Thẻ Meta',
     'root' => 'Danh Mục',
-    'brands' => 'Thương Hiệu',
+    'brands' => 'Nhà Sản Xuất',
     'regions' => 'Quốc Gia',
     'vintages' => 'Giống',
     'professionals' => 'Chuyên Gia',
     'Disable' => 'Không hiện thị',
     'Enable' => 'Hiện Thị',
     'Price' => 'Giá',
+    'Alcohol Content' => 'Nồng Độ Cồn',
+    'Volumne' => 'Thể Tích',
+    'Professional Rating' => 'Chuyên Gia Đánh Giá',
+    'Button' => [
+        'Add' => 'Thêm',
+        'Edit' => 'Sửa',
+        'Delete' => 'Xóa',
+        'Save' => 'Cập Nhật',
+        'Back' => 'Quay Lại',
+        'Create' => 'Tạo Mới'
+    ]
 ];

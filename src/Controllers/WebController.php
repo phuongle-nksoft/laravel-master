@@ -30,6 +30,7 @@ class WebController extends Controller
             ],
             'data' => $data,
             'breadcrumb' => $this->breadcrumb(),
+            'button' => trans('nksoft::common.Button')
         ]);
     }
 

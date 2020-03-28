@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{url('nksoft/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <link rel="stylesheet" href="{{url('nksoft/css/app.css')}}">
+    <link rel="stylesheet" href="{{mix('/nksoft/css/app.css')}}">
     <!-- Styles -->
     @yield('style')
 </head>
@@ -68,7 +68,7 @@
     <script src="{{url('nksoft/plugins/editor/ckeditor/config.js')}}"></script>
     <script src="{{url('nksoft/plugins/editor/ckfinder/ckfinder.js')}}"></script>
     @yield('script')
-    <script src="{{url('nksoft/js/app.js')}}"></script>
+    <script src="{{mix('/nksoft/js/app.js')}}"></script>
 </body>
 
 </html>
