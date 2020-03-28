@@ -43,5 +43,8 @@ return [
         'Save' => 'Cập Nhật',
         'Back' => 'Quay Lại',
         'Create' => 'Tạo Mới'
-    ]
+    ],
+    'Rating' => 'Đánh Giá',
+    'Special Price' => 'Giá Khuyến Mãi',
+    'Sku' => 'Sku'
 ];
