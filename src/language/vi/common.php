@@ -34,7 +34,7 @@ return [
     'Enable' => 'Hiện Thị',
     'Price' => 'Giá',
     'Alcohol Content' => 'Nồng Độ Cồn',
-    'Volumne' => 'Thể Tích',
+    'Volume' => 'Thể Tích',
     'Professional Rating' => 'Chuyên Gia Đánh Giá',
     'Button' => [
         'Add' => 'Thêm',
@@ -46,5 +46,6 @@ return [
     ],
     'Rating' => 'Đánh Giá',
     'Special Price' => 'Giá Khuyến Mãi',
-    'Sku' => 'Sku'
+    'Sku' => 'Sku',
+    'Url' => 'Đường Dẫn'
 ];

@@ -8,8 +8,6 @@
     <title>Control panel</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{url('nksoft/plugins/fontawesome-free/css/all.min.css')}}">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="{{url('nksoft/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{url('nksoft/css/adminlte.min.css')}}">
     <!-- overlayScrollbars -->

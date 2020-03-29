@@ -44,6 +44,20 @@ class SettingsController extends WebController
 
     private function formElement()
     {
+        $social = [
+            [
+                'label' => trans('nksoft::common.Name'),
+                'type' => 'text',
+                'key' => 'name',
+                'class' => 'col-12 col-lg-3'
+            ],
+            [
+                'label' => trans('nksoft::common.Url'),
+                'type' => 'text',
+                'key' => 'url',
+                'class' => 'col-12'
+            ]
+        ];
         return [
             [
                 'key' => 'general',
@@ -52,7 +66,6 @@ class SettingsController extends WebController
                     ['key' => 'head_script', 'label' => trans('nksoft::settings.HeadScript'), 'data' => null, 'type' => 'textarea'],
                     ['key' => 'body_top_script', 'label' => trans('nksoft::settings.BodyTopScript'), 'data' => null, 'type' => 'textarea'],
                     ['key' => 'body_bottom_script', 'label' => trans('nksoft::settings.BodyBottomScript'), 'data' => null, 'type' => 'textarea'],
-                    ['key' => 'social', 'label' => trans('nksoft::settings.Social'), 'data' => config('nksoft.social'), 'type' => 'social'],
                 ],
                 'active' => true,
             ],
@@ -68,6 +81,13 @@ class SettingsController extends WebController
                     ['key' => 'images', 'label' => trans('nksoft::users.Avatar'), 'data' => null, 'type' => 'image'],
                 ],
             ],
+            [
+                'key' => 'social',
+                'label' => trans('nksoft::settings.Social'),
+                'element' => [
+                    ['key' => 'social', 'label' => trans('nksoft::settings.Social'), 'data' => $social, 'type' => 'custom'],
+                ],
+            ]
         ];
     }
 
