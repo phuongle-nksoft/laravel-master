@@ -20,6 +20,7 @@ class CreateFilesUploadsTable extends Migration
             $table->string('image');
             $table->bigInteger('parent_id');
             $table->string('type');
+            $table->boolean('is_banner')->default(0)->nullable();
             $table->integer('order_by');
             $table->timestamps();
         });

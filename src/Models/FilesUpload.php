@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class FilesUpload extends Model
 {
     protected $table = 'files_uploads';
-    protected $fillable = ['id', 'image', 'name', 'description', 'parent_id', 'type', 'order_by'];
+    protected $fillable = ['id', 'image', 'name', 'description', 'parent_id', 'type', 'order_by', 'is_banner'];
 }

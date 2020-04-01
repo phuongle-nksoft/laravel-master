@@ -9,7 +9,11 @@ use Str;
 
 class WebController extends Controller
 {
+    /** Variable module */
     protected $module = '';
+
+    /** Variable exclude  */
+    protected $excludeCol = ['images', 'banner', 'id'];
 
     public function responseError($message = null)
     {
@@ -30,7 +34,7 @@ class WebController extends Controller
             ],
             'data' => $data,
             'breadcrumb' => $this->breadcrumb(),
-            'button' => trans('nksoft::common.Button')
+            'button' => trans('nksoft::common.Button'),
         ]);
     }
 
@@ -136,6 +140,7 @@ class WebController extends Controller
         $image = FilesUpload::find($id);
         if ($image != null) {
             $image->name = $request->get('name');
+            $image->order_by = $request->get('order_by');
             $image->save();
         }
         $response = $this->responseSuccess();
@@ -159,7 +164,7 @@ class WebController extends Controller
         return response()->json($response);
     }
 
-    public function setMedia($images, $parent_id, $type)
+    public function setMedia($images, $parent_id, $type, $is_banner = false)
     {
         if (isset($images)) {
             foreach ($images as $file) {
@@ -174,6 +179,7 @@ class WebController extends Controller
                         'type' => $type,
                         'parent_id' => $parent_id,
                         'name' => $name,
+                        'is_banner' => $is_banner,
                         'order_by' => 0,
                     ]);
                 }

@@ -42,10 +42,13 @@ return [
         'Delete' => 'Xóa',
         'Save' => 'Cập Nhật',
         'Back' => 'Quay Lại',
-        'Create' => 'Tạo Mới'
+        'Create' => 'Tạo Mới',
     ],
     'Rating' => 'Đánh Giá',
     'Special Price' => 'Giá Khuyến Mãi',
     'Sku' => 'Sku',
-    'Url' => 'Đường Dẫn'
+    'Url' => 'Đường Dẫn',
+    'Banner' => 'Hình Lớn',
+    'Smell' => 'Hương Vị',
+    'Rate' => 'Điểm Rượu',
 ];
