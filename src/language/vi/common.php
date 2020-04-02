@@ -51,4 +51,5 @@ return [
     'Banner' => 'Hình Lớn',
     'Smell' => 'Hương Vị',
     'Rate' => 'Điểm Rượu',
+    'Year Of Manufacture' => 'Năm Sản Xuất',
 ];
