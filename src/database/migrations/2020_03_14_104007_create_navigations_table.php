@@ -19,6 +19,7 @@ class CreateNavigationsTable extends Migration
             $table->string('link')->nullable()->default('#');
             $table->integer('order_by')->nullable()->default(100);
             $table->boolean('is_active');
+            $table->string('roles_id')->nullable()->default(json_encode([1, 2, 3]));
             $table->string('icon')->nullable();
             $table->longText('child')->nullable();
             $table->timestamps();

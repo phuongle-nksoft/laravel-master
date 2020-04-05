@@ -40,5 +40,8 @@ class NkSoftMasterServiceProvider extends ServiceProvider
         view()->composer('master::parts.sidebar', function ($view) {
             $view->with(['sidebar' => \Nksoft\Master\Models\Navigations::where(['is_active' => 1])->orderBy('order_by')->get()]);
         });
+        view()->composer('master::parts.header', function ($view) {
+            $view->with(['histories' => \Nksoft\Master\Models\Histories::get()]);
+        });
     }
 }

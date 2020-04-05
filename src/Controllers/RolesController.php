@@ -25,7 +25,7 @@ class RolesController extends WebController
                 ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $this->status()],
             ];
             $select = Arr::pluck($columns, 'key');
-            $users = CurrentModel::select($select)->get();
+            $users = CurrentModel::select($select)->with(['histories'])->paginate();
             $response = [
                 'rows' => $users,
                 'columns' => $columns,
@@ -197,7 +197,12 @@ class RolesController extends WebController
     public function destroy($id)
     {
         try {
-            CurrentModel::find($id)->delete();
+            if (\Auth::user()->role_id == 1) {
+                CurrentModel::find($id)->delete();
+                $this->destroyHistories($id, $this->module);
+            } else {
+                $this->setHistories($id, $this->module);
+            }
             return $this->responseSuccess();
         } catch (\Exception $e) {
             return $this->responseError($e);

@@ -4,7 +4,7 @@ use Nksoft\Master\Controllers\SettingsController;
 use Nksoft\Master\Controllers\UsersController;
 use Nksoft\Master\Controllers\WebController;
 
-Route::group(['prefix' => 'api/admin', 'middleware' => 'api'], function () {
+Route::group(['prefix' => 'api/admin', 'middleware' => 'web'], function () {
     Route::resources([
         '/' => UsersController::class,
         'users' => UsersController::class,

@@ -13,6 +13,17 @@ class UsersController extends WebController
     private $formData = ['id', 'is_active', 'role_id', 'name', 'email', 'password', 'phone', 'birthday', 'area'];
 
     protected $module = 'users';
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (!Auth::check() || Auth::user()->role_id != 1) {
+                return $this->responseError();
+            }
+            return $next($request);
+        })->only(['index', 'create', 'store', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +41,7 @@ class UsersController extends WebController
                 ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $this->status()],
             ];
             $select = Arr::pluck($columns, 'key');
-            $users = CurrentModel::select($select)->get();
+            $users = CurrentModel::select($select)->with(['histories'])->paginate();
             $response = [
                 'rows' => $users,
                 'columns' => $columns,
@@ -83,7 +94,7 @@ class UsersController extends WebController
                     ['key' => 'name', 'label' => trans('nksoft::users.Username'), 'data' => null, 'class' => 'required', 'type' => 'text'],
                     ['key' => 'email', 'label' => trans('nksoft::users.Email'), 'data' => null, 'class' => 'required', 'type' => 'email'],
                     ['key' => 'password', 'label' => trans('nksoft::users.Password'), 'data' => null, 'class' => 'required', 'type' => 'password'],
-                    ['key' => 'phone', 'label' => trans('nksoft::users.Phone'), 'data' => null, 'type' => 'text'],
+                    ['key' => 'phone', 'label' => trans('nksoft::users.Phone'), 'data' => null, 'class' => 'required', 'type' => 'text'],
                     ['key' => 'birthday', 'label' => trans('nksoft::users.Birthday'), 'data' => null, 'type' => 'date'],
                     ['key' => 'area', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'select'],
                     ['key' => 'images', 'label' => trans('nksoft::users.Avatar'), 'data' => config('nksoft.area'), 'type' => 'image'],
@@ -97,6 +108,7 @@ class UsersController extends WebController
         $rules = [
             'name' => 'required',
             'email' => 'required|email',
+            'phone' => 'required',
             'images[]' => 'file',
         ];
         if ($id == 0) {
@@ -112,6 +124,7 @@ class UsersController extends WebController
             'name.required' => __('nksoft::message.Field is require!', ['Field' => trans('nksoft::Users.Username')]),
             'email.required' => __('nksoft::message.Field is require!', ['Field' => 'Email']),
             'email.email' => __('nksoft::message.Email is incorrect!'),
+            'phone.required' => __('nksoft::message.Field is require!', ['Field' => trans('nksoft::users.Phone')]),
             'password.required' => __('nksoft::message.Field is require!', ['Field' => trans('nksoft::login.Password')]),
             'password.min' => __('nksoft::message.Field more than number letter!', ['Field' => trans('nksoft::login.Password'), 'number' => 6]),
         ];
@@ -169,11 +182,20 @@ class UsersController extends WebController
      */
     public function edit($id)
     {
+        if (!Auth::check() || (Auth::user()->role_id != 1 && Auth::user()->id != $id)) {
+            return $this->responseError();
+        }
         try {
             $result = CurrentModel::select($this->formData)->with(['images'])->find($id);
             \array_push($this->formData, 'images');
+            $formElement = $this->formElement();
+            if (Auth::user()->role_id != 1) {
+                $formElement = array_slice($formElement, 1);
+                $formElement[0]['active'] = true;
+            }
+
             $response = [
-                'formElement' => $this->formElement(),
+                'formElement' => $formElement,
                 'result' => $result,
                 'formData' => $this->formData,
                 'module' => $this->module,
@@ -193,6 +215,9 @@ class UsersController extends WebController
      */
     public function update(Request $request, $id)
     {
+        if (!Auth::check() || (Auth::user()->role_id != 1 && Auth::user()->id != $id)) {
+            return $this->responseError();
+        }
         $user = CurrentModel::find($id);
         if ($user == null) {
             return $this->responseError();
@@ -208,7 +233,7 @@ class UsersController extends WebController
                     $data[$item] = $request->get($item);
                 }
             }
-            if ($data['password'] !== $user->password) {
+            if ($data['password'] != 'undefined') {
                 $data['password'] = \Hash::make($data['password']);
             } else {
                 unset($data['password']);
@@ -240,7 +265,12 @@ class UsersController extends WebController
     public function destroy($id)
     {
         try {
-            CurrentModel::find($id)->delete();
+            if (\Auth::user()->role_id == 1) {
+                CurrentModel::find($id)->delete();
+                $this->destroyHistories($id, $this->module);
+            } else {
+                $this->setHistories($id, $this->module);
+            }
             return $this->responseSuccess();
         } catch (\Exception $e) {
             return $this->responseError($e);

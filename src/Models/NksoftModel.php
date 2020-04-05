@@ -13,4 +13,65 @@ class NksoftModel extends Model
     {
         return $this->hasMany('\Nksoft\Master\Models\FilesUpload', 'parent_id')->where(['type' => $this->table]);
     }
+
+    public function histories()
+    {
+        return $this->hasOne('\Nksoft\Master\Models\Histories', 'parent_id')->where(['type' => $this->table]);
+    }
+
+    /**
+     * Get list category by menu
+     */
+    public static function GetListByMenu($result, $type)
+    {
+        $parentId = $result->url_to ?? 0;
+        $data = array();
+        $fs = self::orderBy('order_by')->get();
+        if ($fs) {
+            foreach ($fs as $item) {
+                $selected = array(
+                    'opened' => false,
+                    'selected' => $item->id === $parentId && $type === $result->type ? true : false,
+                );
+                $data[] = array(
+                    'text' => $item->name,
+                    'icon' => 'fas fa-folder',
+                    'id' => $item->id,
+                    'type' => $type,
+                    'state' => $selected,
+                    'children' => null,
+                    'slug' => $item->slug,
+                );
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * Get list category to product
+     */
+    public static function GetListWithParent($where, $result, $type)
+    {
+        $parentId = $result->categories_id ?? 0;
+        $data = array();
+        $fs = self::where($where)->orderBy('order_by')->get();
+        if ($fs) {
+            foreach ($fs as $item) {
+                $selected = array(
+                    'opened' => false,
+                    'selected' => $item->id === $parentId && $result->type === $type ? true : false,
+                );
+                $data[] = array(
+                    'text' => $item->name,
+                    'icon' => 'fas fa-folder',
+                    'type' => $type,
+                    'id' => $item->id,
+                    'state' => $selected,
+                    'children' => self::GetListWithParent(['parent_id' => $item->id], $result, $type),
+                    'slug' => $item->slug,
+                );
+            }
+        }
+        return $data;
+    }
 }

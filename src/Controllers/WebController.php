@@ -3,8 +3,10 @@
 namespace Nksoft\Master\Controllers;
 
 use App\Http\Controllers\Controller;
+use Auth;
 use Illuminate\Http\Request;
 use Nksoft\Master\Models\FilesUpload;
+use Nksoft\Master\Models\Histories;
 use Str;
 
 class WebController extends Controller
@@ -35,6 +37,7 @@ class WebController extends Controller
             'data' => $data,
             'breadcrumb' => $this->breadcrumb(),
             'button' => trans('nksoft::common.Button'),
+            'canDelete' => Auth::user()->role_id == 1,
         ]);
     }
 
@@ -59,14 +62,14 @@ class WebController extends Controller
             }
             if (!intval($item)) {
                 $breadcrumb[] = [
-                    'title' => trans('nksoft::common.' . $item),
+                    'title' => trans('nksoft::common.' . Str::slug($item, " ")),
                     'link' => $link,
                 ];
             }
 
         }
         return [
-            'title' => trans('nksoft::common.' . $this->module),
+            'title' => trans('nksoft::common.' . Str::slug($this->module, ' ')),
             'breadcrumb' => $breadcrumb,
         ];
     }
@@ -164,6 +167,9 @@ class WebController extends Controller
         return response()->json($response);
     }
 
+    /**
+     * function insert media
+     */
     public function setMedia($images, $parent_id, $type, $is_banner = false)
     {
         if (isset($images)) {
@@ -186,4 +192,26 @@ class WebController extends Controller
             }
         }
     }
+
+    /**
+     * function insert histories to admin delete
+     */
+    public function setHistories($parent_id, $type)
+    {
+        return Histories::firstOrCreate(['parent_id' => $parent_id, 'type' => $type, 'user_id' => Auth::user()->id]);
+    }
+
+    /**
+     * function delete histories to admin delete
+     */
+    public function destroyHistories($parent_id, $type)
+    {
+        return Histories::where(['parent_id' => $parent_id, 'type' => $type])->first()->delete();
+    }
+
+    public function getHistories($type)
+    {
+        return Histories::where(['type' => $type])->get();
+    }
+
 }
