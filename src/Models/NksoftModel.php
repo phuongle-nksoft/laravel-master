@@ -50,16 +50,16 @@ class NksoftModel extends Model
     /**
      * Get list category to product
      */
-    public static function GetListWithParent($where, $result, $type)
+    public static function GetListWithParentByMenu($where, $result, $type)
     {
-        $parentId = $result->categories_id ?? 0;
+        $parentId = $result->url_to ?? 0;
         $data = array();
         $fs = self::where($where)->orderBy('order_by')->get();
         if ($fs) {
             foreach ($fs as $item) {
                 $selected = array(
                     'opened' => false,
-                    'selected' => $item->id === $parentId && $result->type === $type ? true : false,
+                    'selected' => $item->id == $parentId && $result->type == $type ? true : false,
                 );
                 $data[] = array(
                     'text' => $item->name,
@@ -67,7 +67,7 @@ class NksoftModel extends Model
                     'type' => $type,
                     'id' => $item->id,
                     'state' => $selected,
-                    'children' => self::GetListWithParent(['parent_id' => $item->id], $result, $type),
+                    'children' => self::GetListWithParentByMenu(['parent_id' => $item->id], $result, $type),
                     'slug' => $item->slug,
                 );
             }

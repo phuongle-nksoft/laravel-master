@@ -20,27 +20,27 @@ class UsersTableSeeder extends Seeder
         if ($rolesExist != null) {
             $roles = [
                 [
-                    'name' => 'Administrator',
+                    'name' => 'Admin',
                     'is_active' => true,
                 ],
                 [
-                    'name' => 'Browser',
+                    'name' => 'Content',
                     'is_active' => true,
                 ],
                 [
-                    'name' => 'Developer',
+                    'name' => 'Sale',
                     'is_active' => true,
                 ],
             ];
             foreach ($roles as $item) {
                 Roles::create($item);
             }
-            $dev = Roles::where(['name' => 'Developer'])->first();
+            $dev = Roles::where(['name' => 'Admin'])->first();
             if ($dev != null) {
                 Users::create([
                     'name' => 'admin',
                     'email' => 'info@codev.vn',
-                    'password' => Hash::make('admin@123'),
+                    'password' => Hash::make('win@123'),
                     'phone' => '0909838524',
                     'role_id' => $dev->id,
                 ]);

@@ -72,4 +72,11 @@ return [
     ],
     'Layout Page' => 'Bố Cục Trang',
     'Url To' => 'Đường Dẫn Đến',
+    'Position' => [
+        'Title' => 'Vị Trí',
+        'Top' => 'Phía Trên',
+        'Right' => 'Bên Phải',
+        'Left' => 'Bên Trái',
+        'Bottom' => 'Ở Dưới',
+    ],
 ];
