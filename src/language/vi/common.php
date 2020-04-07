@@ -79,4 +79,5 @@ return [
         'Left' => 'Bên Trái',
         'Bottom' => 'Ở Dưới',
     ],
+    'Maps' => 'Bản Đồ'
 ];

@@ -170,7 +170,7 @@ class WebController extends Controller
     /**
      * function insert media
      */
-    public function setMedia($images, $parent_id, $type, $is_banner = false)
+    public function setMedia($images, $parent_id, $type, $group_id = 1)
     {
         if (isset($images)) {
             foreach ($images as $file) {
@@ -185,7 +185,7 @@ class WebController extends Controller
                         'type' => $type,
                         'parent_id' => $parent_id,
                         'name' => $name,
-                        'is_banner' => $is_banner,
+                        'group_id' => $group_id,
                         'order_by' => 0,
                     ]);
                 }
