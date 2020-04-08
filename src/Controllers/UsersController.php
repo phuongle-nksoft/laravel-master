@@ -14,6 +14,8 @@ class UsersController extends WebController
 
     protected $module = 'users';
 
+    protected $model = CurrentModel::class;
+
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
@@ -251,27 +253,6 @@ class UsersController extends WebController
                 'result' => $user,
             ];
             return $this->responseSuccess($response);
-        } catch (\Exception $e) {
-            return $this->responseError($e);
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        try {
-            if (\Auth::user()->role_id == 1) {
-                CurrentModel::find($id)->delete();
-                $this->destroyHistories($id, $this->module);
-            } else {
-                $this->setHistories($id, $this->module);
-            }
-            return $this->responseSuccess();
         } catch (\Exception $e) {
             return $this->responseError($e);
         }

@@ -14,6 +14,8 @@ class WebController extends Controller
     /** Variable module */
     protected $module = '';
 
+    protected $model = CurrentModel::class;
+
     /** Variable exclude  */
     protected $excludeCol = ['images', 'banner', 'id'];
 
@@ -156,7 +158,7 @@ class WebController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroyImage($id)
     {
         try {
             FilesUpload::find($id)->delete();
@@ -193,7 +195,8 @@ class WebController extends Controller
         }
     }
 
-    public function getSlug(array $data) {
+    public function getSlug(array $data)
+    {
         return !$data['slug'] || is_null($data['slug']) ? Str::slug($data['name'] . rand(100, strtotime('now')), '-') : Str::slug($data['slug']);
     }
 
@@ -210,12 +213,34 @@ class WebController extends Controller
      */
     public function destroyHistories($parent_id, $type)
     {
-        return Histories::where(['parent_id' => $parent_id, 'type' => $type])->first()->delete();
+        $history = Histories::where(['parent_id' => $parent_id, 'type' => $type])->first();
+        if ($history) {
+            return $history->delete();
+        }
+
     }
 
     public function getHistories($type)
     {
         return Histories::where(['type' => $type])->get();
+    }
+
+    public function destroy($id)
+    {
+        try {
+            if (\Auth::user()->role_id == 1) {
+                if (!request()->get('isCancel')) {
+                    $this->model::find($id)->delete();
+                }
+
+                $this->destroyHistories($id, $this->module);
+            } else {
+                $this->setHistories($id, $this->module);
+            }
+            return $this->responseSuccess();
+        } catch (\Exception $e) {
+            return $this->responseError($e);
+        }
     }
 
 }
