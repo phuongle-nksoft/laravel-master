@@ -69,6 +69,11 @@ return [
         '2 Columns' => 'Trang 2 Cột',
         '1 Column' => 'Trang Nội Dung',
         'Contact' => 'Trang Liên Hệ',
+        'Recruit' => 'Tuyển Dụng',
+        'Career' => 'Nhân Viên',
+        'Default' => 'Mặc Đinh',
+        'List Layout' => 'Bố Cục Dạng Danh Sách',
+        'Promotion Layout' => 'Bố Cục Khuyến Mãi'
     ],
     'Layout Page' => 'Bố Cục Trang',
     'Url To' => 'Đường Dẫn Đến',

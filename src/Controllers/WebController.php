@@ -193,6 +193,10 @@ class WebController extends Controller
         }
     }
 
+    public function getSlug(array $data) {
+        return !$data['slug'] || is_null($data['slug']) ? Str::slug($data['name'] . rand(100, strtotime('now')), '-') : Str::slug($data['slug']);
+    }
+
     /**
      * function insert histories to admin delete
      */
