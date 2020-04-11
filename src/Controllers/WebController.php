@@ -7,6 +7,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Nksoft\Master\Models\FilesUpload;
 use Nksoft\Master\Models\Histories;
+use Nksoft\Master\Models\UrlRedirects;
 use Str;
 
 class WebController extends Controller
@@ -40,6 +41,15 @@ class WebController extends Controller
             'breadcrumb' => $this->breadcrumb(),
             'button' => trans('nksoft::common.Button'),
             'canDelete' => Auth::user()->role_id == 1,
+        ]);
+    }
+
+    public function responseViewSuccess(array $data = [])
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => $data,
+            'breadcrumb' => $this->breadcrumb(),
         ]);
     }
 
@@ -197,7 +207,27 @@ class WebController extends Controller
 
     public function getSlug(array $data)
     {
-        return !$data['slug'] || is_null($data['slug']) ? Str::slug($data['name'] . rand(100, strtotime('now')), '-') : Str::slug($data['slug']);
+        try {
+            $url = !$data['slug'] || is_null($data['slug']) ? Str::slug($data['name'] . rand(100, strtotime('now')), '-') : $data['slug'];
+            $url = strpos($url, '/') === false ? Str::slug($url) : $data['slug'];
+            return $url;
+        } catch (\Execption $e) {
+            return $this->responseError($e);
+        }
+    }
+
+    public function setUrlRedirects($result)
+    {
+        try {
+            $url = !$result->slug || is_null($result->slug) ? Str::slug($result->name . rand(100, strtotime('now')), '-') : strpos($result->slug, '/') === false ? Str::slug($result->slug) : $result->slug;
+            $existsUrl = UrlRedirects::where(['url_original' => $url])->first();
+            if ($existsUrl) {
+                return $this->responseError(trans('nksoft::common.Url exists'));
+            }
+            UrlRedirects::updateOrCreate(['url_path' => $this->module . '/' . $result->id], ['url_original' => $url, 'url_path' => $this->module . '/' . $result->id]);
+        } catch (\Execption $e) {
+            return $this->responseError($e);
+        }
     }
 
     /**

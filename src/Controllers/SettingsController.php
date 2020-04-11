@@ -49,14 +49,20 @@ class SettingsController extends WebController
                 'label' => trans('nksoft::common.Name'),
                 'type' => 'text',
                 'key' => 'name',
-                'class' => 'col-12 col-lg-3'
+                'class' => 'col-12 col-lg-3',
+            ],
+            [
+                'label' => trans('nksoft::common.Image Url'),
+                'type' => 'text',
+                'key' => 'image',
+                'class' => 'col-12',
             ],
             [
                 'label' => trans('nksoft::common.Url'),
                 'type' => 'text',
                 'key' => 'url',
-                'class' => 'col-12'
-            ]
+                'class' => 'col-12',
+            ],
         ];
         return [
             [
@@ -87,7 +93,7 @@ class SettingsController extends WebController
                 'element' => [
                     ['key' => 'social', 'label' => trans('nksoft::settings.Social'), 'data' => $social, 'type' => 'custom'],
                 ],
-            ]
+            ],
         ];
     }
 

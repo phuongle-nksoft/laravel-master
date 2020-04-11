@@ -65,6 +65,7 @@ return [
     'blocks' => 'Danh Sách Block',
     'menus' => 'Thanh Menu',
     'article categories' => 'Danh Mục Bài Viết',
+    'Image Url' => 'Đường Dẫn Hình',
     'layout' => [
         '2 Columns' => 'Trang 2 Cột',
         '1 Column' => 'Trang Nội Dung',
@@ -73,7 +74,7 @@ return [
         'Career' => 'Nhân Viên',
         'Default' => 'Mặc Đinh',
         'List Layout' => 'Bố Cục Dạng Danh Sách',
-        'Promotion Layout' => 'Bố Cục Khuyến Mãi'
+        'Promotion Layout' => 'Bố Cục Khuyến Mãi',
     ],
     'Layout Page' => 'Bố Cục Trang',
     'Url To' => 'Đường Dẫn Đến',
@@ -84,5 +85,7 @@ return [
         'Left' => 'Bên Trái',
         'Bottom' => 'Ở Dưới',
     ],
-    'Maps' => 'Bản Đồ'
+    'Maps' => 'Bản Đồ',
+    'Url Exists' => 'Đường Dẫn Đã Tồn Tại',
+    'Home' => 'Trang Chủ',
 ];
