@@ -1,12 +1,1 @@
-.sidebar-mini .nav-sidebar > .nav-header {
-  text-transform: uppercase;
-}
-
-h1.text-dark {
-  font-size: 2rem;
-}
-
-.content-wrapper {
-  padding-top: 2rem;
-}
-
+.sidebar-mini .nav-sidebar>.nav-header{text-transform:uppercase}h1.text-dark{font-size:2rem}.content-wrapper{padding-top:2rem}

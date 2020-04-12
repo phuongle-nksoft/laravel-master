@@ -26,7 +26,7 @@ class NksoftModel extends Model
     {
         $parentId = $result->url_to ?? 0;
         $data = array();
-        $fs = self::orderBy('order_by')->get();
+        $fs = self::where(['is_active' => 1])->orderBy('order_by')->get();
         if ($fs) {
             foreach ($fs as $item) {
                 $selected = array(
@@ -48,13 +48,28 @@ class NksoftModel extends Model
     }
 
     /**
+     * get list id children level
+     */
+    public static function GetListIds($where, &$data = array())
+    {
+        $result = self::where($where)->where(['is_active' => 1])->get();
+        if ($result) {
+            foreach ($result as $item) {
+                $data[] = $item->id;
+                self::GetListIds(['parent_id' => $item->id], $data);
+            }
+        }
+        return $data;
+    }
+
+    /**
      * Get list category to product
      */
     public static function GetListWithParentByMenu($where, $result, $type)
     {
         $parentId = $result->url_to ?? 0;
         $data = array();
-        $fs = self::where($where)->orderBy('order_by')->get();
+        $fs = self::where($where)->where(['is_active' => 1])->orderBy('order_by')->get();
         if ($fs) {
             foreach ($fs as $item) {
                 $selected = array(

@@ -187,10 +187,9 @@ class WebController extends Controller
         if (isset($images)) {
             foreach ($images as $file) {
                 if ($file->isValid()) {
-                    $name = $file->getClientOriginalName();
-                    $name = Str::slug($name, '-');
+                    $name = request()->get('name') ?? $file->getClientOriginalName();
                     $extension = $file->getClientOriginalExtension();
-                    $fileName = $name . '-' . time() . '.' . $extension;
+                    $fileName = Str::slug($file->getClientOriginalName(), '-') . '-' . rand(3, time()) . '.' . $extension;
                     $path = putUploadImage($file, $fileName);
                     FilesUpload::create([
                         'image' => $path,
@@ -200,6 +199,7 @@ class WebController extends Controller
                         'group_id' => $group_id,
                         'order_by' => 0,
                     ]);
+
                 }
             }
         }

@@ -88,4 +88,5 @@ return [
     'Maps' => 'Bản Đồ',
     'Url Exists' => 'Đường Dẫn Đã Tồn Tại',
     'Home' => 'Trang Chủ',
+    'Icon' => 'Icon',
 ];
