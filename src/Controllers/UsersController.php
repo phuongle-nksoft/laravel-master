@@ -151,6 +151,9 @@ class UsersController extends WebController
                 }
             }
             $data['password'] = \Hash::make($data['password']);
+            if ($this->validateDate($data['birthday'])) {
+                $data['birthday'] = date('Y-m-d', strtotime($data['birthday']));
+            }
             $user = CurrentModel::create($data);
             if ($request->hasFile('images')) {
                 $images = $request->file('images');
@@ -189,6 +192,7 @@ class UsersController extends WebController
         }
         try {
             $result = CurrentModel::select($this->formData)->with(['images'])->find($id);
+            $result->birthday = $result->birthday ? date('d/m/Y', \strtotime($result->birthday)) : '';
             \array_push($this->formData, 'images');
             $formElement = $this->formElement();
             if (Auth::user()->role_id != 1) {
@@ -234,6 +238,9 @@ class UsersController extends WebController
                 if ($item != 'images' && $item != 'id') {
                     $data[$item] = $request->get($item);
                 }
+            }
+            if ($this->validateDate($data['birthday'])) {
+                $data['birthday'] = date('Y-m-d', strtotime($data['birthday']));
             }
             if ($data['password'] != 'undefined') {
                 $data['password'] = \Hash::make($data['password']);

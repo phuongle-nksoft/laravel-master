@@ -6,8 +6,8 @@ return [
     ],
     'area' => [
         ['id' => 'mn', 'name' => 'Miền Nam'],
-        ['id' => 'mb', 'name' => 'Miền Bắc'],
         ['id' => 'mt', 'name' => 'Miền Trung'],
+        ['id' => 'mb', 'name' => 'Miền Bắc'],
     ],
     'social' => [
         ['id' => 'fb', 'name' => 'Facebook'],
