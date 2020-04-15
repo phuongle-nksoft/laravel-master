@@ -89,4 +89,5 @@ return [
     'Url Exists' => 'Đường Dẫn Đã Tồn Tại',
     'Home' => 'Trang Chủ',
     'Icon' => 'Icon',
+    'promotions' => 'Khuyến Mãi'
 ];

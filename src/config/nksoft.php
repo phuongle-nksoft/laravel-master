@@ -1,8 +1,8 @@
 <?php
 return [
     'status' => [
-        ['id' => 0, 'name' => 'Disable'],
         ['id' => 1, 'name' => 'Enable'],
+        ['id' => 0, 'name' => 'Disable'],
     ],
     'area' => [
         ['id' => 'mn', 'name' => 'Miền Nam'],

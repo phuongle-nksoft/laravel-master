@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{url('nksoft/plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{url('nksoft/css/adminlte.min.css')}}">
+    <link rel="stylesheet" href="{{url('nksoft/plugins/daterangepicker/daterangepicker.css')}}">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{url('nksoft/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
     <!-- Google Font: Source Sans Pro -->
@@ -65,8 +66,22 @@
     <script src="{{url('nksoft/plugins/editor/ckeditor/ckeditor.js')}}"></script>
     <script src="{{url('nksoft/plugins/editor/ckeditor/config.js')}}"></script>
     <script src="{{url('nksoft/plugins/editor/ckfinder/ckfinder.js')}}"></script>
+    <!-- date-range-picker -->
+    <script src="{{url('nksoft/plugins/daterangepicker/daterangepicker.js')}}"></script>
     @yield('script')
     <script src="{{mix('/nksoft/js/app.js')}}"></script>
+    <script>
+        (function() {
+            console.log(abc);
+        }).jQuery();
+        $(document).ready(function() {
+            console.log('abc');
+            console.log($('.daterangepicker'));
+            if($('.daterangepicker').length) {
+                console.log($('.daterangepicker'));
+            }
+        });
+    </script>
 </body>
 
 </html>
