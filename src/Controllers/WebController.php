@@ -44,12 +44,13 @@ class WebController extends Controller
         ]);
     }
 
-    public function responseViewSuccess(array $data = [])
+    public function responseViewSuccess(array $data = [], $message = [])
     {
         return response()->json([
             'status' => 'success',
             'data' => $data,
             'breadcrumb' => $this->breadcrumb(),
+            'message' => $message,
         ]);
     }
 
