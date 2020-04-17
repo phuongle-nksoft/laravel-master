@@ -50,7 +50,7 @@ class WebController extends Controller
             'status' => 'success',
             'data' => $data,
             'breadcrumb' => $this->breadcrumb(),
-            'message' => array_merge([trans('nksoft::message.Success')], $message),
+            'message' => $message,
         ]);
     }
 
