@@ -70,18 +70,6 @@
     <script src="{{url('nksoft/plugins/daterangepicker/daterangepicker.js')}}"></script>
     @yield('script')
     <script src="{{mix('/nksoft/js/app.js')}}"></script>
-    <script>
-        (function() {
-            console.log(abc);
-        }).jQuery();
-        $(document).ready(function() {
-            console.log('abc');
-            console.log($('.daterangepicker'));
-            if($('.daterangepicker').length) {
-                console.log($('.daterangepicker'));
-            }
-        });
-    </script>
 </body>
 
 </html>
