@@ -28,7 +28,7 @@ return [
     'root' => 'Danh Mục',
     'brands' => 'Nhà Sản Xuất',
     'regions' => 'Quốc Gia',
-    'vintages' => 'Giống',
+    'vintages' => 'Giống Nho',
     'professionals' => 'Chuyên Gia',
     'Disable' => 'Không hiện thị',
     'Enable' => 'Hiện Thị',
@@ -91,4 +91,5 @@ return [
     'Icon' => 'Icon',
     'Short Name' => 'Tên Ngắn',
     'promotions' => 'Khuyến Mãi',
+    'Product Id' => 'Id Sản Phẩm',
 ];
