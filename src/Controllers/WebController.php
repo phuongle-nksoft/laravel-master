@@ -49,7 +49,6 @@ class WebController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $data,
-            'breadcrumb' => $this->breadcrumb(),
             'message' => $message,
         ]);
     }
