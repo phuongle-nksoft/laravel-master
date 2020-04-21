@@ -30,8 +30,8 @@ return [
     'regions' => 'Quốc Gia',
     'vintages' => 'Giống Nho',
     'professionals' => 'Chuyên Gia',
-    'Disable' => 'Không hiện thị',
-    'Enable' => 'Hiện Thị',
+    'Disable' => 'Không hiển thị',
+    'Enable' => 'Hiển Thị',
     'Price' => 'Giá',
     'Alcohol Content' => 'Nồng Độ Cồn',
     'Volume' => 'Thể Tích',
@@ -92,4 +92,6 @@ return [
     'Short Name' => 'Tên Ngắn',
     'promotions' => 'Khuyến Mãi',
     'Product Id' => 'Id Sản Phẩm',
+    'tags' => 'Tags Sản Phẩm',
+    'Extra' => 'Phần Phụ Thêm'
 ];
