@@ -93,5 +93,7 @@ return [
     'promotions' => 'Khuyến Mãi',
     'Product Id' => 'Id Sản Phẩm',
     'tags' => 'Tags Sản Phẩm',
-    'Extra' => 'Phần Phụ Thêm'
+    'Extra' => 'Phần Phụ Thêm',
+    'Show Comment' => 'Hiển Thị',
+    'Price Contact' => 'Giá Liên Hệ'
 ];
