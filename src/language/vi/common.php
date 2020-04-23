@@ -95,5 +95,6 @@ return [
     'tags' => 'Tags Sản Phẩm',
     'Extra' => 'Phần Phụ Thêm',
     'Show Comment' => 'Hiển Thị',
-    'Price Contact' => 'Giá Liên Hệ'
+    'Price Contact' => 'Giá Liên Hệ',
+    'Qty' => 'Số Lượng',
 ];
