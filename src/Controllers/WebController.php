@@ -215,7 +215,7 @@ class WebController extends Controller
     public function getSlug(array $data)
     {
         try {
-            $url = !$data['slug'] || is_null($data['slug']) ? Str::slug($data['name'] . rand(100, strtotime('now')), '-') : $data['slug'];
+            $url = !isset($data['slug']) ? Str::slug($data['name'] . rand(100, strtotime('now')), '-') : $data['slug'];
             $url = strpos($url, '/') === false ? Str::slug($url) : $data['slug'];
             return $url;
         } catch (\Execption $e) {
