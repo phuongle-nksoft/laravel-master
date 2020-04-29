@@ -17,6 +17,10 @@ Route::group(['middleware' => 'web'], function () {
             'users' => WebController::class,
             'roles' => WebController::class,
             'histories' => WebController::class,
+            'contacts' => WebController::class,
+            'recruits' => WebController::class,
         ]);
     });
+    Route::post('contacts', 'Nksoft\Master\Controllers\ContactsControllers@store');
+    Route::post('recruits', 'Nksoft\Master\Controllers\RecruitControllers@store');
 });

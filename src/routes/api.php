@@ -1,4 +1,7 @@
 <?php
+
+use Nksoft\Master\Controllers\ContactsControllers;
+use Nksoft\Master\Controllers\RecruitControllers;
 use Nksoft\Master\Controllers\RolesController;
 use Nksoft\Master\Controllers\SettingsController;
 use Nksoft\Master\Controllers\UsersController;
@@ -12,6 +15,8 @@ Route::group(['prefix' => 'api/admin', 'middleware' => 'web'], function () {
         'roles' => RolesController::class,
         'media' => WebController::class,
         'settings' => SettingsController::class,
+        'recruits' => RecruitControllers::class,
+        'contacts' => ContactsControllers::class,
     ]);
 
 });

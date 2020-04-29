@@ -97,4 +97,6 @@ return [
     'Show Comment' => 'Hiển Thị',
     'Price Contact' => 'Giá Liên Hệ',
     'Qty' => 'Số Lượng',
+    'Phone' => 'Số Điện Thoại',
+    'Email' => 'Email',
 ];
