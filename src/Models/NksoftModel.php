@@ -34,7 +34,7 @@ class NksoftModel extends Model
                     'selected' => $item->id === $parentId && $type === $result->type ? true : false,
                 );
                 $data[] = array(
-                    'text' => $item->name,
+                    'name' => $item->name,
                     'icon' => 'fas fa-folder',
                     'id' => $item->id,
                     'type' => $type,
@@ -77,7 +77,7 @@ class NksoftModel extends Model
                     'selected' => $item->id == $parentId && $result->type == $type ? true : false,
                 );
                 $data[] = array(
-                    'text' => $item->name,
+                    'name' => $item->name,
                     'icon' => 'fas fa-folder',
                     'type' => $type,
                     'id' => $item->id,
