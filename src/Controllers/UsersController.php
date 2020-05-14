@@ -35,12 +35,12 @@ class UsersController extends WebController
     {
         try {
             $columns = [
-                ['key' => 'id', 'label' => 'Id'],
+                ['key' => 'id', 'label' => 'Id', 'type' => 'hidden'],
                 ['key' => 'name', 'label' => trans('nksoft::common.Name')],
                 ['key' => 'email', 'label' => trans('nksoft::users.Email')],
                 ['key' => 'phone', 'label' => trans('nksoft::users.Phone')],
                 ['key' => 'area', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area')],
-                ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $this->status()],
+                ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $this->status(), 'type' => 'select'],
             ];
             $select = Arr::pluck($columns, 'key');
             $users = CurrentModel::select($select)->with(['histories'])->paginate();
@@ -81,18 +81,11 @@ class UsersController extends WebController
         $roles = Roles::select(['id', 'name'])->get();
         return [
             [
-                'key' => 'general',
-                'label' => trans('nksoft::common.General'),
-                'element' => [
-                    ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $this->status(), 'type' => 'select'],
-                    ['key' => 'role_id', 'label' => trans('nksoft::users.Roles'), 'data' => $roles, 'type' => 'select'],
-                ],
-                'active' => true,
-            ],
-            [
                 'key' => 'inputForm',
                 'label' => trans('nksoft::common.Content'),
                 'element' => [
+                    ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $this->status(), 'type' => 'select'],
+                    ['key' => 'role_id', 'label' => trans('nksoft::users.Roles'), 'data' => $roles, 'type' => 'select'],
                     ['key' => 'name', 'label' => trans('nksoft::users.Username'), 'data' => null, 'class' => 'required', 'type' => 'text'],
                     ['key' => 'email', 'label' => trans('nksoft::users.Email'), 'data' => null, 'class' => 'required', 'type' => 'email'],
                     ['key' => 'password', 'label' => trans('nksoft::users.Password'), 'data' => null, 'class' => 'required', 'type' => 'password'],
@@ -101,6 +94,7 @@ class UsersController extends WebController
                     ['key' => 'area', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'select'],
                     ['key' => 'images', 'label' => trans('nksoft::users.Avatar'), 'data' => config('nksoft.area'), 'type' => 'image'],
                 ],
+                'active' => true,
             ],
         ];
     }
@@ -205,6 +199,7 @@ class UsersController extends WebController
                 'result' => $result,
                 'formData' => $this->formData,
                 'module' => $this->module,
+                'disableDuplicate' => true,
             ];
             return $this->responseSuccess($response);
         } catch (\Execption $e) {

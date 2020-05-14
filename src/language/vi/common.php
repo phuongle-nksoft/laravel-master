@@ -45,6 +45,7 @@ return [
         'Create' => 'Tạo Mới',
         'ListItemDelete' => 'Danh Sách Yêu Cầu Xóa',
         'ShowAll' => 'Tất Cả',
+        'Duplicate' => 'Tạo Bản Sao',
     ],
     'Rating' => 'Đánh Giá',
     'Special Price' => 'Giá Khuyến Mãi',
