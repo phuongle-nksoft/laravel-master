@@ -211,7 +211,11 @@ class SettingsController extends WebController
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
             }
-            $response['result'] = $user;
+            $response = [
+                'result' => $user,
+                'unReload' => true,
+                'disableDuplicate' => true,
+            ];
             return $this->responseSuccess($response);
         } catch (\Exception $e) {
             return $this->responseError($e);

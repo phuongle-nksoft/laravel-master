@@ -100,4 +100,5 @@ return [
     'Qty' => 'Số Lượng',
     'Phone' => 'Số Điện Thoại',
     'Email' => 'Email',
+    'Banners' => 'Hình Slides',
 ];
