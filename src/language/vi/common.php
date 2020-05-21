@@ -101,4 +101,5 @@ return [
     'Phone' => 'Số Điện Thoại',
     'Email' => 'Email',
     'Banners' => 'Hình Slides',
+    'None Slug' => 'Không Đường Dẫn',
 ];

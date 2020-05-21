@@ -23,7 +23,7 @@ class WebController extends Controller
     protected $model = CurrentModel::class;
 
     /** Variable exclude  */
-    protected $excludeCol = ['images', 'banner', 'id'];
+    protected $excludeCol = ['images', 'banner', 'id', 'none_slug'];
 
     public function responseError($message = null)
     {
