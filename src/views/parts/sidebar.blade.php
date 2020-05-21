@@ -15,15 +15,17 @@ $user = Auth::user();
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                @if(in_array($user->role_id, [1,3]))
                 <li class="nav-item">
-                    <a href="{{ url('admin') }}" class="nav-link">
+                    <a href="{{ url('admin/orders') }}" class="nav-link">
                       <i class="nav-icon far fa-bell"></i>
                       <p>
-                        Thông báo
+                        Đơn hàng mới
                         <span class="badge badge-danger right">{{ $newOrder }}</span>
                       </p>
                     </a>
                 </li>
+                @endif
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 @foreach($sidebar as $item)

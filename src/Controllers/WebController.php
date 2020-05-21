@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 use Nksoft\Master\Models\FilesUpload;
 use Nksoft\Master\Models\Histories;
 use Nksoft\Master\Models\UrlRedirects;
+use Nksoft\Products\Models\Categories;
+use Nksoft\Products\Models\Products;
+use Nksoft\Products\Models\ProfessionalRatings;
+use Nksoft\Products\Models\Regions;
+use Nksoft\Products\Models\Vintages;
 use Str;
 
 class WebController extends Controller
@@ -265,7 +270,7 @@ class WebController extends Controller
     public function destroy($id)
     {
         try {
-            if (\Auth::user()->role_id == 1) {
+            if (Auth::user()->role_id == 1) {
                 if (!request()->get('isCancel')) {
                     $this->model::find($id)->delete();
                 }
@@ -278,6 +283,71 @@ class WebController extends Controller
         } catch (\Exception $e) {
             return $this->responseError($e);
         }
+    }
+
+    public function getProductType($result)
+    {
+        $idSelected = $result ? json_decode($result->type) : [];
+        if (!is_array($idSelected)) {
+            $idSelected = [$idSelected];
+        }
+
+        $data = array();
+        foreach (config('nksoft.productType') as $item) {
+            $selected = array(
+                'opened' => false,
+                'selected' => in_array($item['id'], $idSelected) ? true : false,
+            );
+            $data[] = array(
+                'name' => $item['name'],
+                'icon' => 'fas fa-folder',
+                'id' => $item['id'],
+                'state' => $selected,
+                'children' => null,
+                'slug' => '',
+            );
+        }
+        return $data;
+    }
+
+    public function listFilter($type)
+    {
+        $listFilters = [
+            [
+                'label' => 'Theo Loại',
+                'items' => Categories::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->get(),
+                'type' => 'c',
+                'icon' => 'wine',
+            ],
+            [
+                'label' => 'Theo Vùng',
+                'items' => Regions::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->where('parent_id', '>', 0)->get(),
+                'type' => 'r',
+            ],
+            [
+                'label' => 'Theo Giống',
+                'items' => Vintages::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->get(),
+                'type' => 'vg',
+            ],
+            [
+                'label' => 'Theo Nước',
+                'items' => Regions::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->where('parent_id', '=', 0)->get(),
+                'type' => 'r',
+            ],
+            [
+                'label' => 'Theo Điểm Rượu',
+                'items' => ProfessionalRatings::select(['ratings as name', 'ratings as id'])->groupBy('ratings')->get(),
+                'type' => 'p',
+                'icon' => 'star',
+            ],
+            [
+                'label' => 'Theo Dung Tích',
+                'items' => Products::select(['volume as name', 'volume as id'])->where(['type' => $type])->groupBy('volume')->get(),
+                'type' => 'v',
+                'icon' => 'size',
+            ],
+        ];
+        return $listFilters;
     }
 
 }

@@ -33,13 +33,15 @@ class UsersController extends WebController
      */
     public function index()
     {
+        $roles = Roles::select(['id', 'name'])->get();
         try {
             $columns = [
                 ['key' => 'id', 'label' => 'Id', 'type' => 'hidden'],
                 ['key' => 'name', 'label' => trans('nksoft::common.Name')],
                 ['key' => 'email', 'label' => trans('nksoft::users.Email')],
                 ['key' => 'phone', 'label' => trans('nksoft::users.Phone')],
-                ['key' => 'area', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area')],
+                ['key' => 'role_id', 'label' => trans('nksoft::users.Roles'), 'data' => $roles, 'type' => 'select'],
+                ['key' => 'area', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'select'],
                 ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $this->status(), 'type' => 'select'],
             ];
             $select = Arr::pluck($columns, 'key');
@@ -92,7 +94,7 @@ class UsersController extends WebController
                     ['key' => 'phone', 'label' => trans('nksoft::users.Phone'), 'data' => null, 'class' => 'required', 'type' => 'text'],
                     ['key' => 'birthday', 'label' => trans('nksoft::users.Birthday'), 'data' => null, 'type' => 'date'],
                     ['key' => 'area', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'select'],
-                    ['key' => 'images', 'label' => trans('nksoft::users.Avatar'), 'data' => config('nksoft.area'), 'type' => 'image'],
+                    ['key' => 'images', 'label' => trans('nksoft::users.Avatar'), 'data' => null, 'type' => 'image'],
                 ],
                 'active' => true,
             ],
@@ -272,7 +274,11 @@ class UsersController extends WebController
 
         $credentials = $request->only('email', 'password', 'active');
         if (Auth::attempt($credentials)) {
-            return redirect()->to('admin');
+            if (Auth::user()->role_id == 3) {
+                return redirect()->to('admin/orders');
+            }
+
+            return redirect()->to('admin/categories');
         }
         return redirect()->back()->withErrors([trans('nksoft::login.Email or password is incorrect!')], 'login');
     }

@@ -3,6 +3,7 @@
 namespace Nksoft\Master;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Nksoft\Products\Models\Orders;
 
@@ -40,9 +41,14 @@ class NkSoftMasterServiceProvider extends ServiceProvider
         ], 'nksoft');
         $this->mergeConfigFrom(__DIR__ . '/config/nksoft.php', 'nksoft');
         view()->composer('master::parts.sidebar', function ($view) {
+            $order = Orders::whereIn('status', [1, 2])->whereDate('created_at', Carbon::today());
+            if (Auth::user()->role_id > 1) {
+                $order = $order->where(['area' => Auth::user()->area]);
+            }
+
             $view->with([
                 'sidebar' => \Nksoft\Master\Models\Navigations::where(['is_active' => 1])->orderBy('order_by')->get(),
-                'newOrder' => Orders::whereIn('status', [1, 2])->whereDate('created_at', Carbon::today())->count(),
+                'newOrder' => $order->count(),
             ]);
         });
         view()->composer('master::parts.header', function ($view) {

@@ -5,9 +5,9 @@ return [
         ['id' => 0, 'name' => 'Disable'],
     ],
     'area' => [
-        ['id' => 'mn', 'name' => 'Miền Nam'],
-        ['id' => 'mt', 'name' => 'Miền Trung'],
-        ['id' => 'mb', 'name' => 'Miền Bắc'],
+        ['id' => 1, 'name' => 'Miền Nam'],
+        ['id' => 2, 'name' => 'Miền Trung'],
+        ['id' => 3, 'name' => 'Miền Bắc'],
     ],
     'social' => [
         ['id' => 'fb', 'name' => 'Facebook'],
