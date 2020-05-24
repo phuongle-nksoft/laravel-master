@@ -102,4 +102,11 @@ return [
     'Email' => 'Email',
     'Banners' => 'Hình Slides',
     'None Slug' => 'Không Đường Dẫn',
+    'client request' => 'Nội Dung Kiểm Tra',
+    'contacts' => 'Liên Hệ',
+    'comments' => 'Bình Luận Sản Phẩm',
+    'recruits' => 'Tuyển Dụng',
+    'Created At' => 'Ngày Tạo',
+    'Note' => 'Ghi Chú',
+    'promotion images' => 'Block Khuyến Mãi',
 ];

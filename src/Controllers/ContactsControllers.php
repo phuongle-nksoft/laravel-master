@@ -22,11 +22,11 @@ class ContactsControllers extends WebController
     {
         try {
             $columns = [
-                ['key' => 'id', 'label' => 'Id'],
+                ['key' => 'id', 'label' => 'Id', 'type' => 'hidden'],
                 ['key' => 'name', 'label' => trans('nksoft::common.Name')],
                 ['key' => 'phone', 'label' => trans('nksoft::common.Phone')],
                 ['key' => 'email', 'label' => trans('nksoft::common.Email')],
-                ['key' => 'status', 'label' => trans('nksoft::common.Status'), 'data' => $this->status()],
+                ['key' => 'status', 'label' => trans('nksoft::common.Status'), 'data' => $this->status(), 'type' => 'select'],
             ];
             $select = Arr::pluck($columns, 'key');
             $results = CurrentModel::select($select)->with(['histories'])->paginate();
@@ -36,13 +36,20 @@ class ContactsControllers extends WebController
                 'columns' => $columns,
                 'module' => $this->module,
                 'listDelete' => CurrentModel::whereIn('id', $listDelete)->get(),
+                'disableNew' => true,
             ];
             return $this->responseSuccess($response);
         } catch (\Execption $e) {
             return $this->responseError($e);
         }
     }
-
+    public function status()
+    {
+        return [
+            ['id' => 1, 'name' => 'Đã xem'],
+            ['id' => 0, 'name' => 'Chưa xem'],
+        ];
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -72,11 +79,11 @@ class ContactsControllers extends WebController
                 'label' => trans('nksoft::common.General'),
                 'element' => [
                     ['key' => 'status', 'label' => trans('nksoft::common.Status'), 'data' => $status, 'type' => 'select'],
-                    ['key' => 'name', 'label' => trans('nksoft::common.Name'), 'data' => null, 'type' => 'label'],
-                    ['key' => 'phone', 'label' => trans('nksoft::common.Phone'), 'data' => null, 'type' => 'label'],
-                    ['key' => 'email', 'label' => trans('nksoft::common.email'), 'data' => null, 'type' => 'label'],
-                    ['key' => 'note', 'label' => trans('nksoft::common.Name'), 'data' => null, 'type' => 'label'],
-                    ['key' => 'created_at', 'label' => trans('nksoft::common.Name'), 'data' => null, 'type' => 'label'],
+                    ['key' => 'name', 'label' => trans('nksoft::common.Name'), 'data' => $result->name, 'type' => 'label'],
+                    ['key' => 'phone', 'label' => trans('nksoft::common.Phone'), 'data' => $result->phone, 'type' => 'label'],
+                    ['key' => 'email', 'label' => 'Email', 'data' => $result->email, 'type' => 'label'],
+                    ['key' => 'note', 'label' => trans('nksoft::common.Note'), 'data' => $result->note, 'type' => 'label'],
+                    ['key' => 'created_at', 'label' => trans('nksoft::common.Created At'), 'data' => date('d/m/Y', strtotime($result->created_at)), 'type' => 'label'],
                 ],
                 'active' => true,
                 'selected' => $result && $result->parent_id == 0,
@@ -155,12 +162,15 @@ class ContactsControllers extends WebController
     public function edit($id)
     {
         try {
+            array_push($this->formData, 'created_at');
             $result = CurrentModel::select($this->formData)->find($id);
             $response = [
                 'formElement' => $this->formElement($result),
                 'result' => $result,
                 'formData' => $this->formData,
                 'module' => $this->module,
+                'disableNew' => true,
+                'disableDuplicate' => true,
             ];
             return $this->responseSuccess($response);
         } catch (\Execption $e) {
@@ -186,7 +196,7 @@ class ContactsControllers extends WebController
             return $this->responseError($validator->errors());
         }
         try {
-            $status = $request->get('status');
+            $status = $request->get('status') ?? 0;
             $result = CurrentModel::updateOrCreate(['id' => $id], ['status' => $status]);
             $response = [
                 'result' => $result,

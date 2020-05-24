@@ -5,6 +5,7 @@ namespace Nksoft\Master\Controllers;
 use Arr;
 use Illuminate\Http\Request;
 use Nksoft\Master\Models\Recruits as CurrentModel;
+use Str;
 
 class RecruitControllers extends WebController
 {
@@ -22,11 +23,11 @@ class RecruitControllers extends WebController
     {
         try {
             $columns = [
-                ['key' => 'id', 'label' => 'Id'],
+                ['key' => 'id', 'label' => 'Id', 'type' => 'hidden'],
                 ['key' => 'name', 'label' => trans('nksoft::common.Name')],
                 ['key' => 'phone', 'label' => trans('nksoft::common.Phone')],
-                ['key' => 'email', 'label' => trans('nksoft::common.Email')],
-                ['key' => 'status', 'label' => trans('nksoft::common.Status'), 'data' => $this->status()],
+                ['key' => 'email', 'label' => 'Email'],
+                ['key' => 'status', 'label' => trans('nksoft::common.Status'), 'data' => $this->status(), 'type' => 'select'],
             ];
             $select = Arr::pluck($columns, 'key');
             $results = CurrentModel::select($select)->with(['histories'])->paginate();
@@ -36,11 +37,21 @@ class RecruitControllers extends WebController
                 'columns' => $columns,
                 'module' => $this->module,
                 'listDelete' => CurrentModel::whereIn('id', $listDelete)->get(),
+                'disableNew' => true,
+                'disableDuplicate' => true,
             ];
             return $this->responseSuccess($response);
         } catch (\Execption $e) {
             return $this->responseError($e);
         }
+    }
+
+    public function status()
+    {
+        return [
+            ['id' => 1, 'name' => 'Đã xem'],
+            ['id' => 0, 'name' => 'Chưa xem'],
+        ];
     }
 
     /**
@@ -74,10 +85,10 @@ class RecruitControllers extends WebController
                     ['key' => 'status', 'label' => trans('nksoft::common.Status'), 'data' => $status, 'type' => 'select'],
                     ['key' => 'name', 'label' => trans('nksoft::common.Name'), 'data' => $result ? $result->name : null, 'type' => 'label'],
                     ['key' => 'phone', 'label' => trans('nksoft::common.Phone'), 'data' => $result ? $result->phone : null, 'type' => 'label'],
-                    ['key' => 'email', 'label' => trans('nksoft::common.email'), 'data' => $result ? $result->email : null, 'type' => 'label'],
-                    ['key' => 'note', 'label' => trans('nksoft::common.Name'), 'data' => $result ? $result->note : null, 'type' => 'label'],
-                    ['key' => 'file', 'label' => trans('nksoft::common.Name'), 'data' => $result ? url('storage/' . $result->file) : null, 'type' => 'link'],
-                    ['key' => 'created_at', 'label' => trans('nksoft::common.Name'), 'data' => $result ? $result->created_at : null, 'type' => 'label'],
+                    ['key' => 'email', 'label' => 'Email', 'data' => $result ? $result->email : null, 'type' => 'label'],
+                    ['key' => 'note', 'label' => trans('nksoft::common.Note'), 'data' => $result ? $result->note : null, 'type' => 'label'],
+                    ['key' => 'file', 'label' => 'File', 'data' => $result && $result->file ? url('storage/' . $result->file) : null, 'type' => 'link'],
+                    ['key' => 'created_at', 'label' => trans('nksoft::common.Created At'), 'data' => $result ? date('d/m/Y', strtotime($result->created_at)) : null, 'type' => 'label'],
                 ],
                 'active' => true,
                 'selected' => $result && $result->parent_id == 0,
@@ -126,11 +137,17 @@ class RecruitControllers extends WebController
                 }
             }
             $data['status'] = 0;
-            $result = CurrentModel::create($data);
             if ($request->hasFile('file')) {
                 $images = $request->file('file');
-                $this->setMedia($images, $result->id, $this->module);
+                if ($images->isValid()) {
+                    $extension = $images->getClientOriginalExtension();
+                    $fileName = Str::slug($images->getClientOriginalName(), '-') . '-' . rand(3, time()) . '.' . $extension;
+                    $path = putUploadImage($images, $fileName);
+
+                }
             }
+            $data['file'] = $path;
+            $result = CurrentModel::create($data);
             $response = [
                 'result' => $result,
             ];
@@ -160,12 +177,15 @@ class RecruitControllers extends WebController
     public function edit($id)
     {
         try {
+            array_push($this->formData, 'created_at');
             $result = CurrentModel::select($this->formData)->find($id);
             $response = [
                 'formElement' => $this->formElement($result),
                 'result' => $result,
                 'formData' => $this->formData,
                 'module' => $this->module,
+                'disableNew' => true,
+                'disableDuplicate' => true,
             ];
             return $this->responseSuccess($response);
         } catch (\Execption $e) {

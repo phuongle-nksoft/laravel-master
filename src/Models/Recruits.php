@@ -1,9 +1,7 @@
 <?php
 namespace Nksoft\Master\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Recruits extends Model
+class Recruits extends NksoftModel
 {
     const FIELDS = ['id', 'file', 'email', 'name', 'phone', 'status'];
     protected $table = 'recruits';

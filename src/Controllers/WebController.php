@@ -323,16 +323,19 @@ class WebController extends Controller
                 'label' => 'Theo Vùng',
                 'items' => Regions::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->where('parent_id', '>', 0)->get(),
                 'type' => 'r',
+                'icon' => 'area',
             ],
             [
                 'label' => 'Theo Giống',
                 'items' => Vintages::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->get(),
                 'type' => 'vg',
+                'icon' => 'type',
             ],
             [
                 'label' => 'Theo Nước',
                 'items' => Regions::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->where('parent_id', '=', 0)->get(),
                 'type' => 'r',
+                'icon' => 'country',
             ],
             [
                 'label' => 'Theo Điểm Rượu',
