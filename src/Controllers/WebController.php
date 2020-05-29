@@ -310,7 +310,7 @@ class WebController extends Controller
         return $data;
     }
 
-    public function listFilter($type)
+    public function listFilter($type, $typeRemove = null)
     {
         $listFilters = [
             [
@@ -350,6 +350,11 @@ class WebController extends Controller
                 'icon' => 'size',
             ],
         ];
+        if ($typeRemove) {
+            $listFilters = array_filter($listFilters, function ($item) use ($typeRemove) {
+                return $item['type'] != $typeRemove;
+            });
+        }
         return $listFilters;
     }
 

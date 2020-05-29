@@ -11,7 +11,7 @@ class NksoftModel extends Model
 
     public function images()
     {
-        return $this->hasMany('\Nksoft\Master\Models\FilesUpload', 'parent_id')->where(['type' => $this->table]);
+        return $this->hasMany('\Nksoft\Master\Models\FilesUpload', 'parent_id')->where(['type' => $this->table])->orderBy('order_by');
     }
 
     public function histories()
@@ -26,7 +26,7 @@ class NksoftModel extends Model
     {
         $parentId = $result->url_to ?? 0;
         $data = array();
-        $fs = self::where(['is_active' => 1])->orderBy('order_by')->get();
+        $fs = self::orderBy('order_by')->get();
         if ($fs) {
             foreach ($fs as $item) {
                 $selected = array(
@@ -52,7 +52,7 @@ class NksoftModel extends Model
      */
     public static function GetListIds($where, &$data = array())
     {
-        $result = self::where($where)->where(['is_active' => 1])->get();
+        $result = self::where($where)->get();
         if ($result) {
             foreach ($result as $item) {
                 $data[] = $item->id;
@@ -69,7 +69,7 @@ class NksoftModel extends Model
     {
         $parentId = $result->url_to ?? 0;
         $data = array();
-        $fs = self::where($where)->where(['is_active' => 1])->orderBy('order_by')->get();
+        $fs = self::where($where)->orderBy('order_by')->get();
         if ($fs) {
             foreach ($fs as $item) {
                 $selected = array(
