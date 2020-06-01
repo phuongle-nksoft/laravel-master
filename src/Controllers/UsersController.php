@@ -92,7 +92,7 @@ class UsersController extends WebController
                     ['key' => 'email', 'label' => trans('nksoft::users.Email'), 'data' => null, 'class' => 'required', 'type' => 'email'],
                     ['key' => 'password', 'label' => trans('nksoft::users.Password'), 'data' => null, 'class' => 'required', 'type' => 'password'],
                     ['key' => 'phone', 'label' => trans('nksoft::users.Phone'), 'data' => null, 'class' => 'required', 'type' => 'text'],
-                    ['key' => 'birthday', 'label' => trans('nksoft::users.Birthday'), 'data' => null, 'type' => 'date'],
+                    ['key' => 'birthday', 'label' => trans('nksoft::users.Birthday'), 'data' => null, 'type' => 'date', 'class' => 'col-md-3'],
                     ['key' => 'area', 'label' => trans('nksoft::users.Area'), 'data' => config('nksoft.area'), 'type' => 'select'],
                     ['key' => 'images', 'label' => trans('nksoft::users.Avatar'), 'data' => null, 'type' => 'image'],
                 ],
@@ -188,7 +188,7 @@ class UsersController extends WebController
         }
         try {
             $result = CurrentModel::select($this->formData)->with(['images'])->find($id);
-            $result->birthday = $result->birthday ? date('d/m/Y', \strtotime($result->birthday)) : '';
+            // $result->birthday = $result->birthday ? date('d/m/Y', \strtotime($result->birthday)) : '';
             \array_push($this->formData, 'images');
             $formElement = $this->formElement();
             if (Auth::user()->role_id != 1) {
@@ -239,7 +239,7 @@ class UsersController extends WebController
             if ($this->validateDate($data['birthday'])) {
                 $data['birthday'] = date('Y-m-d', strtotime($data['birthday']));
             }
-            if ($data['password'] != 'undefined') {
+            if ($data['password'] && $data['password'] != 'undefined') {
                 $data['password'] = \Hash::make($data['password']);
             } else {
                 unset($data['password']);
