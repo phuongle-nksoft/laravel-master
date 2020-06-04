@@ -334,7 +334,7 @@ class WebController extends Controller
             [
                 'label' => 'Theo Nước',
                 'items' => Regions::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->where('parent_id', '=', 0)->get(),
-                'type' => 'r',
+                'type' => 'rg',
                 'icon' => 'country',
             ],
             [
@@ -352,7 +352,7 @@ class WebController extends Controller
         ];
         if ($typeRemove) {
             $listFilters = array_filter($listFilters, function ($item) use ($typeRemove) {
-                return $item['type'] != $typeRemove;
+                return $typeRemove == 'r' ? $item['type'] != $typeRemove && $item['type'] != 'rg' : $item['type'] != $typeRemove;
             });
         }
         return $listFilters;
