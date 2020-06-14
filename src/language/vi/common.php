@@ -109,4 +109,5 @@ return [
     'Created At' => 'Ngày Tạo',
     'Note' => 'Ghi Chú',
     'promotion images' => 'Block Khuyến Mãi',
+    'Title' => 'Title',
 ];
