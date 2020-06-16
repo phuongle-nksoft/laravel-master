@@ -221,7 +221,7 @@ class WebController extends Controller
     {
         try {
             $url = !isset($data['slug']) ? Str::slug($data['name'] . rand(100, strtotime('now')), '-') : $data['slug'];
-            $url = strpos($url, '/') === false ? Str::slug($url) : $data['slug'];
+            $url = (strpos($url, '/') !== false || strpos($url, '#') !== false) ? $data['slug'] : Str::slug($url);
             return $url;
         } catch (\Execption $e) {
             return $this->responseError($e);
