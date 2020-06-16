@@ -168,6 +168,7 @@ class WebController extends Controller
         if ($image != null) {
             $image->name = $request->get('name');
             $image->order_by = $request->get('order_by');
+            $image->slug = $request->get('slug');
             $image->save();
         }
         $response = $this->responseSuccess();
