@@ -58,6 +58,19 @@ class WebController extends Controller
         ]);
     }
 
+    public function SEO($result) {
+        $image = $result->images()->first();
+        $im = $image ? 'storage/' . $image->image : 'wine/images/share/logo.svg';
+        return [
+            'title' => $result->meta_title ? $result->meta_title : $result->name,
+            'ogDescription' => $result->meta_description,
+            'ogUrl' => url($result->slug),
+            'ogImage' => url($im),
+            'canonicalLink' => $result->canonical_link ? $result->canonical_link : url($result->slug),
+            'ogSiteName' => $result->meta_title ? $result->meta_title : $result->name,
+        ];
+    }
+
     public function validateDate($date, $format = 'm/d/Y')
     {
         $d = \DateTime::createFromFormat($format, $date);
