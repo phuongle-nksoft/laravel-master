@@ -100,7 +100,7 @@ return [
     'Qty' => 'Số Lượng',
     'Phone' => 'Số Điện Thoại',
     'Email' => 'Email',
-    'Banners' => 'Hình Slides',
+    'banners' => 'Hình Slides',
     'None Slug' => 'Không Đường Dẫn',
     'client request' => 'Nội Dung Kiểm Tra',
     'contacts' => 'Liên Hệ',
@@ -110,4 +110,5 @@ return [
     'Note' => 'Ghi Chú',
     'promotion images' => 'Block Khuyến Mãi',
     'Title' => 'Title',
+    'discoveries' => 'Khám Phá',
 ];
