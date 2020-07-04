@@ -5,14 +5,18 @@ namespace Nksoft\Master\Controllers;
 use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Http\Request;
+use Mockery\Matcher\Type;
 use Nksoft\Master\Models\FilesUpload;
 use Nksoft\Master\Models\Histories;
 use Nksoft\Master\Models\UrlRedirects;
 use Nksoft\Products\Models\Categories;
+use Nksoft\Products\Models\CategoryProductsIndex;
 use Nksoft\Products\Models\Products;
 use Nksoft\Products\Models\ProfessionalRatings;
 use Nksoft\Products\Models\Regions;
+use Nksoft\Products\Models\TypeProducts;
 use Nksoft\Products\Models\Vintages;
+use Nksoft\Products\Models\VintagesProductIndex;
 use Str;
 
 class WebController extends Controller
@@ -58,7 +62,8 @@ class WebController extends Controller
         ]);
     }
 
-    public function SEO($result) {
+    public function SEO($result)
+    {
         $image = $result->images()->first();
         $im = $image ? 'storage/' . $image->image : 'wine/images/share/logo.svg';
         return [
@@ -85,6 +90,11 @@ class WebController extends Controller
             $status[] = ['id' => $k['id'], 'name' => trans('nksoft::common.' . $k['name'])];
         }
         return $status;
+    }
+
+    public function getTypeProducts()
+    {
+        return TypeProducts::select(['id', 'name'])->get();
     }
 
     public function breadcrumb()
@@ -324,46 +334,79 @@ class WebController extends Controller
         return $data;
     }
 
-    public function listFilter($type, $typeRemove = null)
+    public function listFilter($type, $products, $typeRemove = null)
     {
-        $listFilters = [
-            [
+        $listFilters = array();
+        $typeProducts = TypeProducts::find($type);
+        $filter = array();
+        $productId = $products->pluck('id');
+        $regionId = $products->pluck('regions_id');
+        $vintageId = $products->pluck('vintages_banner_id');
+        if ($typeProducts) {
+            $filter = json_decode($typeProducts->filter);
+        }
+
+        if (in_array(1, $filter)) {
+            $c = [
                 'label' => 'Theo Loại',
-                'items' => Categories::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->get(),
+                'items' => Categories::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->whereIn('id', function ($query) use ($productId) {
+                    $query->from(with(new CategoryProductsIndex())->getTable())->select(['categories_id'])->whereIn('products_id', $productId)->groupBy('categories_id')->pluck('categories_id');})->get(),
                 'type' => 'c',
                 'icon' => 'wine',
-            ],
-            [
-                'label' => 'Theo Vùng',
-                'items' => Regions::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->where('parent_id', '>', 0)->get(),
+            ];
+            array_push($listFilters, $c);
+        }
+        if (in_array(2, $filter)) {
+            $text = 'Theo Vùng';
+            if (!in_array($type, [4, 1])) {
+                $text = 'Theo Dòng';
+            }
+            $r = [
+                'label' => $text,
+                'items' => Regions::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->where('parent_id', '>', 0)->whereIn('id', $regionId)->get(),
                 'type' => 'r',
                 'icon' => 'area',
-            ],
-            [
+            ];
+            array_push($listFilters, $r);
+        }
+        if (in_array(3, $filter)) {
+            $r = [
                 'label' => 'Theo Giống',
-                'items' => Vintages::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->get(),
+                'items' => Vintages::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->whereIn('id', function ($query) use ($productId) {
+                    $query->from(with(new VintagesProductIndex())->getTable())->select(['vintages_id'])->whereIn('products_id', $productId)->pluck('vintages_id');
+                })->get(),
                 'type' => 'vg',
                 'icon' => 'type',
-            ],
-            [
+            ];
+            array_push($listFilters, $r);
+        }
+        if (in_array(4, $filter)) {
+            $r = [
                 'label' => 'Theo Nước',
-                'items' => Regions::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->where('parent_id', '=', 0)->get(),
+                'items' => Regions::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->where('parent_id', '=', 0)->whereIn('id', $regionId)->get(),
                 'type' => 'rg',
                 'icon' => 'country',
-            ],
-            [
+            ];
+            array_push($listFilters, $r);
+        }
+        if (in_array(5, $filter)) {
+            $r = [
                 'label' => 'Theo Điểm Rượu',
-                'items' => ProfessionalRatings::select(['ratings as name', 'ratings as id'])->groupBy('ratings')->get(),
+                'items' => ProfessionalRatings::select(['ratings as name', 'ratings as id'])->whereIn('products_id', $productId)->groupBy('ratings')->get(),
                 'type' => 'p',
                 'icon' => 'star',
-            ],
-            [
+            ];
+            array_push($listFilters, $r);
+        }
+        if (in_array(6, $filter)) {
+            $r = [
                 'label' => 'Theo Dung Tích',
-                'items' => Products::select(['volume as name', 'volume as id'])->where(['type' => $type])->groupBy('volume')->get(),
+                'items' => Products::select(['volume as name', 'volume as id'])->where(['type' => $type, 'is_active' => 1])->whereIn('id', $productId)->groupBy('volume')->get(),
                 'type' => 'v',
                 'icon' => 'size',
-            ],
-        ];
+            ];
+            array_push($listFilters, $r);
+        }
         if ($typeRemove) {
             $listFilters = array_filter($listFilters, function ($item) use ($typeRemove) {
                 return $typeRemove == 'r' ? $item['type'] != $typeRemove && $item['type'] != 'rg' : $item['type'] != $typeRemove;
