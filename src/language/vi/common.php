@@ -111,5 +111,5 @@ return [
     'promotion images' => 'Block Khuyến Mãi',
     'Title' => 'Title',
     'discoveries' => 'Khám Phá',
-    'types' => 'Loại sản phẩm',
+    'types' => 'Loại dữ liệu',
 ];

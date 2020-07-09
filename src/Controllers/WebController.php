@@ -47,6 +47,7 @@ class WebController extends Controller
                 'default' => trans('nksoft::message.Success'),
             ],
             'data' => $data,
+            'media' => isset($data['formElement']) ? scandir(storage_path('app/public/media')) : [],
             'breadcrumb' => $this->breadcrumb(),
             'button' => trans('nksoft::common.Button'),
             'canDelete' => Auth::user()->role_id == 1,

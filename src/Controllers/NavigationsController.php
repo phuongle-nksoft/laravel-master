@@ -20,7 +20,7 @@ class NavigationsController extends Controller
     {
         try {
             $columns = ['id', 'title', 'link', 'icon'];
-            $users = CurrentModel::select($columns)->paginate();
+            $users = CurrentModel::select($columns)->get();
             $response = [
                 'data' => [
                     'rows' => $users,

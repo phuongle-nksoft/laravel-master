@@ -25,7 +25,7 @@ class RolesController extends WebController
                 ['key' => 'is_active', 'label' => trans('nksoft::common.Status'), 'data' => $this->status()],
             ];
             $select = Arr::pluck($columns, 'key');
-            $users = CurrentModel::select($select)->with(['histories'])->paginate();
+            $users = CurrentModel::select($select)->with(['histories'])->get();
             $response = [
                 'rows' => $users,
                 'columns' => $columns,
