@@ -151,10 +151,7 @@ class UsersController extends WebController
                 $data['birthday'] = date('Y-m-d', strtotime($data['birthday']));
             }
             $user = CurrentModel::create($data);
-            if ($request->hasFile('images')) {
-                $images = $request->file('images');
-                $this->setMedia($images, $user->id, $this->module);
-            }
+            $this->media($request, $user);
             $response = [
                 'result' => $user,
             ];
@@ -249,10 +246,7 @@ class UsersController extends WebController
             }
             $user->save();
             // $user = CurrentModel::save(['id' => $id], $data);
-            if ($request->hasFile('images')) {
-                $images = $request->file('images');
-                $this->setMedia($images, $user->id, $this->module);
-            }
+            $this->media($request, $user);
             $response = [
                 'result' => $user,
             ];

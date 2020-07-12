@@ -64,7 +64,7 @@ class ContactsControllers extends WebController
                 'formData' => $this->formData,
                 'module' => $this->module,
             ];
-            return $this->responseSuccess($response);
+            return $this->responseSuccess($response, false);
         } catch (\Execption $e) {
             return $this->responseError($e);
         }
@@ -172,7 +172,7 @@ class ContactsControllers extends WebController
                 'disableNew' => true,
                 'disableDuplicate' => true,
             ];
-            return $this->responseSuccess($response);
+            return $this->responseSuccess($response, false);
         } catch (\Execption $e) {
             return $this->responseError($e);
         }

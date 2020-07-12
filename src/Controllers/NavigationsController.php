@@ -214,7 +214,7 @@ class NavigationsController extends Controller
                 $images = $request->file('images');
                 $this->setMedia($images, $user->id, $this->module);
             }
-            $response = $this->responseSuccess();
+            $response = $this->responseSuccess([], false);
             $response['result'] = $user;
         } catch (\Exception $e) {
             $response = $this->responseError($e);

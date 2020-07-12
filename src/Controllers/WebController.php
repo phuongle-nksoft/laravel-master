@@ -39,7 +39,7 @@ class WebController extends Controller
         ]);
     }
 
-    public function responseSuccess(array $data = [])
+    public function responseSuccess(array $data = [], $loadImage = true)
     {
         return response()->json([
             'status' => 'success',
@@ -47,7 +47,7 @@ class WebController extends Controller
                 'default' => trans('nksoft::message.Success'),
             ],
             'data' => $data,
-            'media' => isset($data['formElement']) ? scandir(storage_path('app/public/media')) : [],
+            'media' => isset($data['formElement']) && $loadImage ? scandir(storage_path('app/public/media')) : [],
             'breadcrumb' => $this->breadcrumb(),
             'button' => trans('nksoft::common.Button'),
             'canDelete' => Auth::user()->role_id == 1,
@@ -150,7 +150,21 @@ class WebController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $images = $request->file('files');
+            $nameImages = [];
+            foreach ($images as $file) {
+                if ($file->isValid()) {
+                    $extension = $file->getClientOriginalExtension();
+                    $fileName = Str::slug($file->getClientOriginalName(), '-') . '-' . rand(3, time()) . '.' . $extension;
+                    putUploadImage($file, $fileName);
+                    array_push($nameImages, $fileName);
+                }
+            }
+            return $this->responseSuccess(['images' => $nameImages]);
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage());
+        }
     }
 
     /**
@@ -199,13 +213,28 @@ class WebController extends Controller
         return response()->json($response);
     }
 
+    public function destroyImage(Request $request)
+    {
+        try {
+            $images = $request->get('images');
+            if (count($images) > 0) {
+                foreach ($images as $image) {
+                    deleteImage('public/media/' . $image);
+                }
+            }
+            return $this->responseSuccess();
+        } catch (\Exception $e) {
+            return $this->responseError($e->getMessage());
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroyImage($id)
+    public function destroyUploadFile($id)
     {
         try {
             FilesUpload::find($id)->delete();
@@ -216,28 +245,34 @@ class WebController extends Controller
         return response()->json($response);
     }
 
+    public function media($request, $result)
+    {
+        $images = $request->get('images');
+        if ($images) {
+            $this->setMedia($images, $result->id, $this->module);
+        }
+        $banner = $request->get('banner');
+        if ($banner) {
+            $this->setMedia($banner, $result->id, $this->module, 2);
+        }
+        $maps = $request->get('maps');
+        if ($maps) {
+            $this->setMedia($maps, $result->id, $this->module, 3);
+        }
+    }
+
     /**
      * function insert media
      */
     public function setMedia($images, $parent_id, $type, $group_id = 1)
     {
         if (isset($images)) {
-            foreach ($images as $file) {
-                if ($file->isValid()) {
-                    $name = request()->get('name') ?? $file->getClientOriginalName();
-                    $extension = $file->getClientOriginalExtension();
-                    $fileName = Str::slug($file->getClientOriginalName(), '-') . '-' . rand(3, time()) . '.' . $extension;
-                    $path = putUploadImage($file, $fileName);
-                    FilesUpload::create([
-                        'image' => $path,
-                        'type' => $type,
-                        'parent_id' => $parent_id,
-                        'name' => $name,
-                        'group_id' => $group_id,
-                        'order_by' => 0,
-                    ]);
-
-                }
+            $images = json_decode($images);
+            $name = request()->get('name');
+            foreach ($images as $img) {
+                $where = ['type' => $type, 'parent_id' => $parent_id, 'group_id' => $group_id, 'image' => $img->image];
+                $value = array_merge($where, ['order_by' => $img->order_by ? $img->order_by : 0, 'name' => $img->name ? $img->name : $name, 'slug' => $img->slug]);
+                FilesUpload::updateOrCreate($where, $value);
             }
         }
     }

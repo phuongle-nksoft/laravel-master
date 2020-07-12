@@ -29,7 +29,6 @@ if (!function_exists('deleteImage')) {
     {
         if ($default == true) {
             $small = str_replace("media/", "media/small/", $path);
-            \Storage::delete($thumb);
             \Storage::delete($small);
         }
         return \Storage::delete($path);

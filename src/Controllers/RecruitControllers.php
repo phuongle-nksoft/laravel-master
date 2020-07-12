@@ -68,7 +68,7 @@ class RecruitControllers extends WebController
                 'formData' => $this->formData,
                 'module' => $this->module,
             ];
-            return $this->responseSuccess($response);
+            return $this->responseSuccess($response, false);
         } catch (\Execption $e) {
             return $this->responseError($e);
         }
@@ -187,7 +187,7 @@ class RecruitControllers extends WebController
                 'disableNew' => true,
                 'disableDuplicate' => true,
             ];
-            return $this->responseSuccess($response);
+            return $this->responseSuccess($response, false);
         } catch (\Execption $e) {
             return $this->responseError($e);
         }
@@ -216,7 +216,7 @@ class RecruitControllers extends WebController
             $response = [
                 'result' => $result,
             ];
-            return $this->responseSuccess($response);
+            return $this->responseSuccess($response, false);
         } catch (\Exception $e) {
             return $this->responseError($e);
         }
