@@ -5,7 +5,6 @@ namespace Nksoft\Master\Controllers;
 use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Http\Request;
-use Mockery\Matcher\Type;
 use Nksoft\Master\Models\FilesUpload;
 use Nksoft\Master\Models\Histories;
 use Nksoft\Master\Models\UrlRedirects;
@@ -50,7 +49,7 @@ class WebController extends Controller
             'media' => isset($data['formElement']) && $loadImage ? scandir(storage_path('app/public/media')) : [],
             'breadcrumb' => $this->breadcrumb(),
             'button' => trans('nksoft::common.Button'),
-            'canDelete' => Auth::user()->role_id == 1,
+            'canDelete' => Auth::check() && Auth::user()->role_id == 1 ? true : false,
         ]);
     }
 
@@ -67,7 +66,7 @@ class WebController extends Controller
     {
         $image = $result->images()->first();
         $im = $image ? 'storage/' . $image->image : 'wine/images/share/logo.svg';
-        return [
+        $data = [
             'title' => $result->meta_title ? $result->meta_title : $result->name,
             'ogDescription' => $result->meta_description,
             'ogUrl' => url($result->slug),
@@ -75,6 +74,7 @@ class WebController extends Controller
             'canonicalLink' => $result->canonical_link ? $result->canonical_link : url($result->slug),
             'ogSiteName' => $result->meta_title ? $result->meta_title : $result->name,
         ];
+        return $data;
     }
 
     public function validateDate($date, $format = 'm/d/Y')
@@ -377,7 +377,7 @@ class WebController extends Controller
         $filter = array();
         $productId = $products->pluck('id');
         $regionId = $products->pluck('regions_id');
-        $vintageId = $products->pluck('vintages_banner_id');
+        $regionParentId = Regions::whereIn('id', $regionId)->select('parent_id')->groupBy('parent_id')->pluck('parent_id');
         if ($typeProducts) {
             $filter = json_decode($typeProducts->filter);
         }
@@ -419,7 +419,7 @@ class WebController extends Controller
         if (in_array(4, $filter)) {
             $r = [
                 'label' => 'Theo Nước',
-                'items' => Regions::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->where('parent_id', '=', 0)->whereIn('id', $regionId)->get(),
+                'items' => Regions::select(['id', 'name'])->where(['type' => $type, 'is_active' => 1])->where('parent_id', '=', 0)->whereIn('id', $regionParentId)->get(),
                 'type' => 'rg',
                 'icon' => 'country',
             ];
@@ -443,6 +443,18 @@ class WebController extends Controller
             ];
             array_push($listFilters, $r);
         }
+        $price = [
+            'label' => 'Theo khoảng giá',
+            'items' => collect([
+                ['id' => '0-500', 'name' => 'Dưới 500.000đ'],
+                ['id' => '500-1000', 'name' => 'Từ 500.000 đến 1.000.000'],
+                ['id' => '1000-2500', 'name' => 'Từ 1.000.000 đến 2.500.000'],
+                ['id' => '2500-5000', 'name' => 'Từ 2.500.000 đến 5.000.000'],
+                ['id' => '5000', 'name' => 'Trên 5.000.000'],
+            ])->all(),
+            'type' => 'pr',
+        ];
+        array_push($listFilters, $price);
         if ($typeRemove) {
             $listFilters = array_filter($listFilters, function ($item) use ($typeRemove) {
                 return $typeRemove == 'r' ? $item['type'] != $typeRemove && $item['type'] != 'rg' : $item['type'] != $typeRemove;
