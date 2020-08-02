@@ -445,6 +445,7 @@ class WebController extends Controller
         }
         $price = [
             'label' => 'Theo khoảng giá',
+            'icon' => 'price',
             'items' => collect([
                 ['id' => '0-500', 'name' => 'Dưới 500.000đ'],
                 ['id' => '500-1000', 'name' => 'Từ 500.000 đến 1.000.000'],
